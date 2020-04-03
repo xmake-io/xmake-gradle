@@ -1,0 +1,25 @@
+# MacOS Cache
+.DS_Store
+
+# Xmake cache
+.xmake/
+build/
+
+# for VS Code
+.vscode/
+
+# for vim
+*.swp
+*.swo
+tags
+!tags/
+
+# Ignore packaging files
+*.exe
+*.zip
+*.gz
+*.bz2
+*.xz
+*.7z
+*.run
+
