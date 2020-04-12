@@ -14,6 +14,11 @@ build/
 tags
 !tags/
 
+# For gradle & idea
+local.properties
+.gradle
+.idea
+
 # Ignore packaging files
 *.exe
 *.zip
