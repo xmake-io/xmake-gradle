@@ -14,12 +14,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
  
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a"
-        }
-        
-        cmake {
-            cppFlags "-DTEST"
+        externalNativeBuild {
+
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+            
+            cmake {
+                cppFlags "-DTEST"
+            }
         }
     }
 
