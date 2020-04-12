@@ -19,6 +19,9 @@ local.properties
 .gradle
 .idea
 
+# for build-build
+.cxx
+
 # Ignore packaging files
 *.exe
 *.zip

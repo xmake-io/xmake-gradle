@@ -35,7 +35,7 @@
  */
 extern "C"
 {
-    JNIEXPORT jstring Java_org_tboox_xmake_nativelib_getNativeInfo(JNIEnv* env, jclass jthis, jobject context)
+    JNIEXPORT jstring Java_org_tboox_xmake_nativelib_Test_getNativeInfo(JNIEnv* env, jclass jthis, jobject context)
     {
         return env->NewStringUTF("hello xmake!");
     }
