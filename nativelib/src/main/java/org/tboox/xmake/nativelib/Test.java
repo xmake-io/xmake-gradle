@@ -1,15 +1,11 @@
 package org.tboox.xmake.nativelib;
 
-import android.util.Log;
-
 public class Test {
 
-    private static final String TAG = "xmake-nativelib";
-
-    public static void loadTests() {
+    public static String loadTests() {
         System.loadLibrary("c++_shared");
         System.loadLibrary("nativelib");
-        Log.e(TAG, getNativeInfo());
+        return getNativeInfo();
     }
     public static native String getNativeInfo();
 }
