@@ -18,6 +18,7 @@ tags
 local.properties
 .gradle
 .idea
+*.iml
 
 # for build-build
 .cxx
