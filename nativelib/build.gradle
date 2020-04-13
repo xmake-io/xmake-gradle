@@ -1,8 +1,5 @@
-/*plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.1'
-}*/
-//apply plugin: org.tboox.gradle.XMakePlugin 
 apply plugin: 'com.android.library'
+apply plugin: "org.tboox.gradle-xmake-plugin"
 
 android {
     compileSdkVersion 29
@@ -24,9 +21,10 @@ android {
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
             
+            /*
             cmake {
                 cppFlags "-DTEST"
-            }
+            }*/
         }
     }
 
@@ -35,9 +33,11 @@ android {
         ndkBuild {
             path "jni/Android.mk"
         }*/
+
+        /*
         cmake {
             path "jni/CMakeLists.txt"
-        }
+        }*/
     }
 
     buildTypes {
@@ -51,7 +51,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation fileTree(dir: '../gradle-xmake-plugin/build/libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
