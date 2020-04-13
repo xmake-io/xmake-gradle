@@ -6,6 +6,9 @@ plugins {
     id 'maven-publish'
 }
 
+group = "org.tboox"
+version = "1.0.1"
+
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
