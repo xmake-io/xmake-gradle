@@ -1,0 +1,45 @@
+plugins {
+    // to publish the plugin at the gradle plugin portal
+    id "com.gradle.plugin-publish" version "0.10.1"
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+    implementation gradleApi()
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+gradlePlugin {
+    plugins {
+        xmakePlugin {
+            id = 'org.tboox.gradle-xmake-plugin'
+            implementationClass = 'org.tboox.gradle.XMakePlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/xmake/xmake-gradle'
+    vcsUrl = 'https://github.com/xmake/xmake-gradle'
+    description = 'Plugin to use Xmake from Gradle'
+    tags = ['xmake', 'c++', 'lua']
+
+    plugins {
+        cmakePlugin {
+            // id is captured from java-gradle-plugin configuration
+            displayName = 'Gradle XMake plugin'
+        }
+    }
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
