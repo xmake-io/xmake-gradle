@@ -23,27 +23,25 @@ package org.tboox.gradle
 import org.gradle.api.GradleException
 import org.gradle.api.GradleScriptException
 import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 class XMakeExecutor {
 
     // tag
     private final String TAG = "[xmake]: "
 
-    private Logger logger
-    private String taskName
+    // the logger
+    private final Logger logger = Logging.getLogger("xmake")
 
-    XMakeExecutor(Logger logger, String taskName) {
-        this.logger = logger
-        this.taskName = taskName
-    }
-
+    // execute process
     protected void exec(List<String> cmdLine, File workingFolder) throws GradleException {
 
         // log command line parameters
-        logger.warn(TAG + taskName + " - exec: ")
+        StringBuilder sb = new StringBuilder(TAG + "exec: ")
         for (String s : cmdLine) {
-            logger.warn(line)
+            sb.append(s).append(" ")
         }
+        logger.warn(sb.toString())
 
         // build process
         ProcessBuilder pb = new ProcessBuilder(cmdLine)
@@ -64,7 +62,7 @@ class XMakeExecutor {
                 logger.warn(line)
             }
             if ( null != (line = errorReader.readLine()) ) {
-                logger.error(TAG + taskName + " - errors: ")
+                logger.error(TAG + "errors: ")
                 while (line != null) {
                     logger.error(line)
                     line = errorReader.readLine()
@@ -74,13 +72,13 @@ class XMakeExecutor {
             // wait for process exit
             int retCode = process.waitFor()
             if (retCode != 0)
-                throw new GradleException(TAG + taskName + " - exec failed( " + retCode .. ")")
+                throw new GradleException(TAG + "exec failed( " + retCode .. ")")
         }
         catch (IOException e) {
-            throw new GradleScriptException(TAG + taskName, e)
+            throw new GradleScriptException(TAG, e)
         }
         catch (InterruptedException e) {
-            throw new GradleScriptException(TAG + taskName, e)
+            throw new GradleScriptException(TAG, e)
         }
     }
 }

@@ -21,6 +21,7 @@
 package org.tboox.gradle
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -28,16 +29,45 @@ import org.gradle.api.tasks.TaskAction
 
 class XMakeConfigureTask extends DefaultTask {
 
-    // get logger
-    private final Logger logger = Logging.getLogger("xmake-plugin")
+    // tag
+    private final String TAG = "[xmake]: "
+
+    // the logger
+    private final Logger logger = Logging.getLogger("xmake")
+
+    // the plugin extension
+    XMakePluginExtension extension
 
     XMakeConfigureTask() {
         setGroup("xmake")
         setDescription("Configure a Build with XMake")
     }
 
+    // build command line
+    private List<String> buildCmdLine() {
+        List<String> parameters = new ArrayList<>();
+        parameters.add("xmake");
+        parameters.add("f");
+        parameters.add("-y");
+        parameters.add("-c");
+        parameters.add("-p");
+        parameters.add("android");
+        return parameters;
+    }
+
     @TaskAction
     void configure() {
-        logger.log(LogLevel.WARN, "[xmake-plugin]: do configure")
+
+        // trace
+        logger.warn(TAG + "do configure")
+
+        // check
+        if (!new File(extension.path).isFile()) {
+            throw new GradleException(TAG + extension.path + " not found!")
+        }
+
+        // do configure
+        XMakeExecutor executor = new XMakeExecutor()
+        executor.exec(buildCmdLine(), new File(extension.path).parentFile.absoluteFile)
     }
 }

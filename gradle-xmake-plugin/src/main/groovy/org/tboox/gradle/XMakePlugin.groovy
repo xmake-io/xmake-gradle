@@ -26,7 +26,7 @@ import org.gradle.api.logging.Logging
 
 class XMakePlugin implements Plugin<Project> {
 
-    // get logger
+    // the logger
     private final Logger logger = Logging.getLogger("xmake")
 
     // tag
@@ -51,10 +51,7 @@ class XMakePlugin implements Plugin<Project> {
         project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
             @Override
             void execute(XMakeConfigureTask task) {
-                logger.warn(TAG + "property: " + extension.path);
-                logger.warn(TAG + "property: " + extension.cppFlags);
-
-                //task.getExecutable().set(extension.test)
+                task.extension = extension
             }
         });
     }
