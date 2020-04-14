@@ -41,14 +41,17 @@ class XMakePlugin implements Plugin<Project> {
             throw new ProjectConfigurationException("Need android application/library plugin to be applied first", new Throwable())
         }
 
-        // trace
-        logger.warn(TAG + "applied to project: " + project.name)
-
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 
         // check project file exists (jni/xmake.lua)
-        // TODO
+        if (!new XMakeTaskContext(extension, project).projectFile.isFile()) {
+            return
+        }
+
+        // TODO set verbose level
+        // trace
+        logger.warn(TAG + "activated for project: " + project.name)
 
         // register task: xmakeConfigure
         project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {

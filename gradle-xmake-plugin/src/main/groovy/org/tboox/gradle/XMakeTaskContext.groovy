@@ -52,6 +52,15 @@ class XMakeTaskContext {
 
     // get build directory
     File getBuildDirectory() {
+        String buildDir = extension.buildDir
+        if (buildDir != null) {
+            File file = new File(buildDir)
+            if (file.isAbsolute()) {
+                return file.absoluteFile
+            } else {
+                return new File(project.buildscript.sourceFile.parentFile, buildDir).absoluteFile
+            }
+        }
         return project.buildDir.absoluteFile
     }
 }

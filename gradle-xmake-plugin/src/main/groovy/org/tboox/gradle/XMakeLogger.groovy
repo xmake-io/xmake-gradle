@@ -15,23 +15,12 @@
  * Copyright (C) 2020-present, TBOOX Open Source Group.
  *
  * @author      ruki
- * @file        XMakePluginExtension.groovy
+ * @file        XMakeLogger.groovy
  *
  */
 package org.tboox.gradle
 
-class XMakePluginExtension {
-
-    // the project path (e.g. jni/xmake.lua)
-    String path
-
-    // the build directory
-    String buildDir
-
-    // enable verbose output
-    Boolean verbose
-
-    // the c++ compile flags
-    String cppFlags
+class XMakeLogger {
+    
 }
 
