@@ -45,6 +45,12 @@ xmake-gradle是一个无缝整合xmake的gradle插件。
 * [Github](https://github.com/xmake-io/xmake-gradle)
 * [Gitee](https://gitee.com/tboox/xmake-gradle)
 
+## 编译插件
+
+```console
+$ ./gradlew gradle-xmake-plugin:assemble
+```
+
 ## 联系方式
 
 * 邮箱：[waruqi@gmail.com](mailto:waruqi@gmail.com)

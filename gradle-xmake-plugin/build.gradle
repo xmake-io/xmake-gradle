@@ -5,6 +5,7 @@ plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
 }
+apply plugin: 'groovy'
 
 group = "org.tboox"
 version = "1.0.1"
@@ -16,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    implementation localGroovy()
     implementation gradleApi()
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'

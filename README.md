@@ -45,6 +45,12 @@ If you want to know more, please refer to:
 * [Github](https://github.com/xmake-io/xmake-gradle)
 * [Gitee](https://gitee.com/tboox/xmake-gradle)
 
+## Build Plugins
+
+```console
+$ ./gradlew gradle-xmake-plugin:assemble
+```
+
 ## Contacts
 
 * Email：[waruqi@gmail.com](mailto:waruqi@gmail.com)
