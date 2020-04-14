@@ -22,6 +22,7 @@ package org.tboox.gradle
 
 class XMakePluginExtension {
 
-    String test
+    String path
+    String cppFlags
 }
 

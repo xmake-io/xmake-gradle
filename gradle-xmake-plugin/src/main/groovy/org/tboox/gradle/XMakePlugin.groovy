@@ -21,14 +21,16 @@
 package org.tboox.gradle
 
 import org.gradle.api.*
-import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
 class XMakePlugin implements Plugin<Project> {
 
     // get logger
-    private final Logger logger = Logging.getLogger("xmake-plugin")
+    private final Logger logger = Logging.getLogger("xmake")
+
+    // tag
+    private final String TAG = "[xmake]: "
 
     @Override
     void apply(Project project) {
@@ -40,7 +42,7 @@ class XMakePlugin implements Plugin<Project> {
         }
 
         // trace
-        logger.log(LogLevel.WARN, "[xmake-plugin]: applied to project: " + project.name)
+        logger.warn(TAG + "applied to project: " + project.name)
 
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
@@ -49,7 +51,9 @@ class XMakePlugin implements Plugin<Project> {
         project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
             @Override
             void execute(XMakeConfigureTask task) {
-                logger.log(LogLevel.WARN, "[xmake-plugin]: property: " + extension.test);
+                logger.warn(TAG + "property: " + extension.path);
+                logger.warn(TAG + "property: " + extension.cppFlags);
+
                 //task.getExecutable().set(extension.test)
             }
         });

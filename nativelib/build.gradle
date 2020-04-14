@@ -14,7 +14,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
- 
+
         externalNativeBuild {
 
             ndk {
@@ -23,6 +23,11 @@ android {
             
             /*
             cmake {
+                cppFlags "-DTEST"
+            }*/
+
+            /*
+            xmake {
                 cppFlags "-DTEST"
             }*/
         }
@@ -38,10 +43,10 @@ android {
         cmake {
             path "jni/CMakeLists.txt"
         }*/
-    }
 
-    xmake {
-        test "test"
+        xmake {
+            path "jni/xmake.lua"
+        }
     }
 
     buildTypes {
