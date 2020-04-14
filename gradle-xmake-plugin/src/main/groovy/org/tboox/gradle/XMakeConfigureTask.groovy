@@ -35,9 +35,10 @@ class XMakeConfigureTask extends DefaultTask {
     // the logger
     private final Logger logger = Logging.getLogger("xmake")
 
-    // the plugin extension
-    XMakePluginExtension extension
+    // the task context
+    XMakeTaskContext taskContext
 
+    // the constructor
     XMakeConfigureTask() {
         setGroup("xmake")
         setDescription("Configure a Build with XMake")
@@ -49,9 +50,9 @@ class XMakeConfigureTask extends DefaultTask {
         parameters.add("xmake");
         parameters.add("f");
         parameters.add("-y");
-        parameters.add("-c");
         parameters.add("-p");
         parameters.add("android");
+        parameters.add("--buildir=" + taskContext.buildDirectory.path)
         return parameters;
     }
 
@@ -62,12 +63,12 @@ class XMakeConfigureTask extends DefaultTask {
         logger.warn(TAG + "do configure")
 
         // check
-        if (!new File(extension.path).isFile()) {
-            throw new GradleException(TAG + extension.path + " not found!")
+        if (!taskContext.projectFile.isFile()) {
+            throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")
         }
 
         // do configure
         XMakeExecutor executor = new XMakeExecutor()
-        executor.exec(buildCmdLine(), new File(extension.path).parentFile.absoluteFile)
+        executor.exec(buildCmdLine(), taskContext.projectDirectory)
     }
 }

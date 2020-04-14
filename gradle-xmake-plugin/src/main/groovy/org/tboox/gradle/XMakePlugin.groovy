@@ -47,12 +47,15 @@ class XMakePlugin implements Plugin<Project> {
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 
+        // check project file exists (jni/xmake.lua)
+        // TODO
+
         // register task: xmakeConfigure
         project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
             @Override
             void execute(XMakeConfigureTask task) {
-                task.extension = extension
+                task.taskContext = new XMakeTaskContext(extension, project)
             }
-        });
+        })
     }
 }
