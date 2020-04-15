@@ -58,6 +58,9 @@ class XMakePlugin implements Plugin<Project> {
 
         // register tasks: xmakeRebuildForXXX
         registerXMakeRebuildTasks(project, extension, logger)
+
+        // register tasks: xmakeCleanForXXX
+        registerXMakeCleanTasks(project, extension, logger)
     }
 
     private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
@@ -110,4 +113,23 @@ class XMakePlugin implements Plugin<Project> {
             i++
         }
     }
+
+    private registerXMakeCleanTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
+        def names = ["Arm64", "Armv7", "Arm", "X64", "X86"]
+        def archs = ["arm64-v8a", "armeabi-v7a", "armeabi", "x64", "x86"]
+        int i = 0
+        for (String name : names) {
+            def cleanTask = project.tasks.register("xmakeCleanFor" + name, XMakeCleanTask, new Action<XMakeCleanTask>() {
+                @Override
+                void execute(XMakeCleanTask task) {
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archs[i])
+                }
+            })
+            cleanTask.configure { Task task ->
+                task.dependsOn("xmakeConfigureFor" + name)
+            }
+            i++
+        }
+    }
+
 }
