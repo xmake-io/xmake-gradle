@@ -75,4 +75,14 @@ class XMakeTaskContext {
         }
         return project.buildDir.absoluteFile
     }
+
+    // get cflags
+    List<String> getcFlags() {
+        return extension.cFlags
+    }
+
+    // get cppflags
+    List<String> getCppFlags() {
+        return extension.cppFlags
+    }
 }

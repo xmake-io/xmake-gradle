@@ -47,6 +47,32 @@ class XMakeConfigureTask extends DefaultTask {
             parameters.add("-a");
             parameters.add(taskContext.arch);
         }
+        List<String> cFlags = taskContext.cFlags
+        if (cFlags != null && cFlags.size() > 0) {
+            int i = 0
+            StringBuilder sb = new StringBuilder()
+            for (String flag: cFlags) {
+                if (i != 0) {
+                    sb.append(" ")
+                }
+                sb.append(flag)
+                i++
+            }
+            parameters.add("--cflags=\"" + sb.toString() + "\"")
+        }
+        List<String> cppFlags = taskContext.cppFlags
+        if (cppFlags != null && cppFlags.size() > 0) {
+            int i = 0
+            StringBuilder sb = new StringBuilder()
+            for (String flag: cppFlags) {
+                if (i != 0) {
+                    sb.append(" ")
+                }
+                sb.append(flag)
+                i++
+            }
+            parameters.add("--cxxflags=\"" + sb.toString() + "\"")
+        }
         parameters.add("--buildir=" + taskContext.buildDirectory.path)
         return parameters;
     }
