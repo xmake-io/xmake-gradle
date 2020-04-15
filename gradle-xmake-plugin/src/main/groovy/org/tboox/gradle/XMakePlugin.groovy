@@ -50,8 +50,11 @@ class XMakePlugin implements Plugin<Project> {
         // trace
         logger.i(TAG, "activated for project: " + project.name)
 
-        // register task: xmakeConfigureForXXX
+        // register tasks: xmakeConfigureForXXX
         registerXMakeConfigureTasks(project, extension, logger)
+
+        // register tasks: xmakeBuildForXXX
+        registerXMakeBuildTasks(project, extension, logger)
     }
 
     private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
@@ -91,4 +94,54 @@ class XMakePlugin implements Plugin<Project> {
             }
         })
     }
+
+    private registerXMakeBuildTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
+
+        def xmakeBuildTaskForArm64 = project.tasks.register("xmakeBuildForArm64", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "arm64-v8a")
+            }
+        })
+        xmakeBuildTaskForArm64.configure { Task task ->
+            task.dependsOn("xmakeConfigureForArm64")
+        }
+        def xmakeBuildTaskForArmv7 = project.tasks.register("xmakeBuildForArmv7", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "armeabi-v7a")
+            }
+        })
+        xmakeBuildTaskForArmv7.configure { Task task ->
+            task.dependsOn("xmakeConfigureForArmv7")
+        }
+        def xmakeBuildTaskForArm = project.tasks.register("xmakeBuildForArm", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "armeabi")
+            }
+        })
+        xmakeBuildTaskForArm.configure { Task task ->
+            task.dependsOn("xmakeConfigureForArm")
+        }
+        def xmakeBuildTaskForX64 = project.tasks.register("xmakeBuildForX64", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "x64")
+            }
+        })
+        xmakeBuildTaskForX64.configure { Task task ->
+            task.dependsOn("xmakeConfigureForX64")
+        }
+        def xmakeBuildTaskForX86 = project.tasks.register("xmakeBuildForX86", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "x86")
+            }
+        })
+        xmakeBuildTaskForX86.configure { Task task ->
+            task.dependsOn("xmakeConfigureForX86")
+        }
+    }
+
 }
