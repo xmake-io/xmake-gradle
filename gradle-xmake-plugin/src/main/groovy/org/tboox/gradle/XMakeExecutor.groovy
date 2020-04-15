@@ -28,12 +28,19 @@ class XMakeExecutor {
     // tag
     private final String TAG = "executor"
 
+    // show command?
+    private boolean showCommand = true
+
     // the logger
     XMakeLogger logger
 
     // the constructor
     XMakeExecutor(XMakeLogger logger) {
         this.logger = logger
+    }
+    XMakeExecutor(XMakeLogger logger, boolean showCommand) {
+        this.logger = logger
+        this.showCommand = showCommand
     }
 
     // execute process
@@ -44,7 +51,9 @@ class XMakeExecutor {
         for (String s : cmdLine) {
             sb.append(s).append(" ")
         }
-        logger.i(sb.toString())
+        if (showCommand) {
+            logger.i(sb.toString())
+        }
 
         // build process
         ProcessBuilder pb = new ProcessBuilder(cmdLine)

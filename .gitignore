@@ -20,8 +20,10 @@ local.properties
 .idea
 *.iml
 
-# for build-build
+# for build
+*.so
 .cxx
+libs
 
 # Ignore packaging files
 *.exe

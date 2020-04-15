@@ -61,18 +61,18 @@ class XMakeInstallArtifacts  {
     // install artifacts
     void install() {
 
+        // trace
+        taskContext.logger.i(">> install artifacts to " + taskContext.nativeLibsDir.absolutePath)
+
         // install artifacts to the native libs directory
         File installArtifactsScriptFile = new File(taskContext.buildDirectory, "install_artifacts.lua")
-        if (!installArtifactsScriptFile.isFile()) {
-            installArtifactsScriptFile.withWriter { out ->
-                out.println("function main(installdir, ...)")
-                out.println("    print(installdir)")
-                out.println("end")
-            }
+        installArtifactsScriptFile.withWriter { out ->
+            String text = getClass().getClassLoader().getResourceAsStream("lua/install_artifacts.lua").getText()
+            out.write(text)
         }
 
         // do install
-        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
+        XMakeExecutor executor = new XMakeExecutor(taskContext.logger, false)
         executor.exec(buildCmdLine(installArtifactsScriptFile), taskContext.projectDirectory)
     }
 }
