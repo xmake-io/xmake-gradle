@@ -15,35 +15,29 @@
  * Copyright (C) 2020-present, TBOOX Open Source Group.
  *
  * @author      ruki
- * @file        XMakeBuildTask.groovy
+ * @file        XMakeInstallArtifacts.groovy
  *
  */
 package org.tboox.gradle
 
-import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.tasks.TaskAction
 
-class XMakeBuildTask extends DefaultTask {
+class XMakeInstallArtifacts  {
 
     // the task context
     XMakeTaskContext taskContext
 
     // the constructor
-    XMakeBuildTask() {
-        setGroup("xmake")
-        setDescription("Build a configured Build with XMake")
+    XMakeInstallArtifacts(XMakeTaskContext taskContext) {
+        this.taskContext = taskContext
     }
 
     // build command line
-    private List<String> buildCmdLine() {
+    private List<String> buildCmdLine(File installArtifactsScriptFile) {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
-        parameters.add("build");
+        parameters.add("lua");
         switch (taskContext.logLevel) {
-            case "warning":
-                parameters.add("-w")
-                break
             case "verbose":
                 parameters.add("-v")
                 break
@@ -53,6 +47,8 @@ class XMakeBuildTask extends DefaultTask {
             default:
                 break
         }
+        parameters.add(installArtifactsScriptFile.absolutePath)
+        parameters.add(taskContext.nativeLibsDir.absolutePath)
         Set<String> targets = taskContext.targets
         if (targets != null && targets.size() > 0) {
             for (String target: targets) {
@@ -62,19 +58,21 @@ class XMakeBuildTask extends DefaultTask {
         return parameters;
     }
 
-    @TaskAction
-    void build() {
-
-        // check
-        if (!taskContext.projectFile.isFile()) {
-            throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")
-        }
-
-        // do build
-        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
-        executor.exec(buildCmdLine(), taskContext.projectDirectory)
+    // install artifacts
+    void install() {
 
         // install artifacts to the native libs directory
-        new XMakeInstallArtifacts(taskContext).install()
+        File installArtifactsScriptFile = new File(taskContext.buildDirectory, "install_artifacts.lua")
+        if (!installArtifactsScriptFile.isFile()) {
+            installArtifactsScriptFile.withWriter { out ->
+                out.println("function main(installdir, ...)")
+                out.println("    print(installdir)")
+                out.println("end")
+            }
+        }
+
+        // do install
+        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
+        executor.exec(buildCmdLine(installArtifactsScriptFile), taskContext.projectDirectory)
     }
 }

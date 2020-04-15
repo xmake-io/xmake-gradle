@@ -27,6 +27,15 @@ class XMakePlugin implements Plugin<Project> {
     // tag
     private final String TAG = "plugin"
 
+    // logger
+    private XMakeLogger logger
+
+    // the architecture maps
+    private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x64", X86: "x86"]
+
+    // the forName lists
+    private List<String> forNames = ["Arm64", "Armv7", "Arm", "X64", "X86"]
+
     @Override
     void apply(Project project) {
 
@@ -40,7 +49,7 @@ class XMakePlugin implements Plugin<Project> {
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 
         // init logger
-        XMakeLogger logger = new XMakeLogger(extension)
+        logger = new XMakeLogger(extension)
 
         // check project file exists (jni/xmake.lua)
         if (!new XMakeTaskContext(extension, project).projectFile.isFile()) {
@@ -64,71 +73,62 @@ class XMakePlugin implements Plugin<Project> {
     }
 
     private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        def names = ["Arm64", "Armv7", "Arm", "X64", "X86"]
-        def archs = ["arm64-v8a", "armeabi-v7a", "armeabi", "x64", "x86"]
-        int i = 0
-        for (String name : names) {
+        for (String name : forNames) {
             project.tasks.register("xmakeConfigureFor" + name, XMakeConfigureTask, new Action<XMakeConfigureTask>() {
                 @Override
                 void execute(XMakeConfigureTask task) {
-                    task.taskContext = new XMakeTaskContext(extension, project, logger, archs[i])
+                    String forName = task.name.split("For")[1]
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
                 }
             })
-            i++
         }
     }
 
     private registerXMakeBuildTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        def names = ["Arm64", "Armv7", "Arm", "X64", "X86"]
-        def archs = ["arm64-v8a", "armeabi-v7a", "armeabi", "x64", "x86"]
-        int i = 0
-        for (String name : names) {
+        for (String name : forNames) {
             def buildTask = project.tasks.register("xmakeBuildFor" + name, XMakeBuildTask, new Action<XMakeBuildTask>() {
                 @Override
                 void execute(XMakeBuildTask task) {
-                    task.taskContext = new XMakeTaskContext(extension, project, logger, archs[i])
+                    String forName = task.name.split("For")[1]
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
                 }
             })
             buildTask.configure { Task task ->
-                task.dependsOn("xmakeConfigureFor" + name)
+                String forName = task.name.split("For")[1]
+                task.dependsOn("xmakeConfigureFor" + forName)
             }
-            i++
         }
     }
 
     private registerXMakeRebuildTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        def names = ["Arm64", "Armv7", "Arm", "X64", "X86"]
-        def archs = ["arm64-v8a", "armeabi-v7a", "armeabi", "x64", "x86"]
-        int i = 0
-        for (String name : names) {
+        for (String name : forNames) {
             def rebuildTask = project.tasks.register("xmakeRebuildFor" + name, XMakeRebuildTask, new Action<XMakeRebuildTask>() {
                 @Override
                 void execute(XMakeRebuildTask task) {
-                    task.taskContext = new XMakeTaskContext(extension, project, logger, archs[i])
+                    String forName = task.name.split("For")[1]
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
                 }
             })
             rebuildTask.configure { Task task ->
-                task.dependsOn("xmakeConfigureFor" + name)
+                String forName = task.name.split("For")[1]
+                task.dependsOn("xmakeConfigureFor" + forName)
             }
-            i++
         }
     }
 
     private registerXMakeCleanTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        def names = ["Arm64", "Armv7", "Arm", "X64", "X86"]
-        def archs = ["arm64-v8a", "armeabi-v7a", "armeabi", "x64", "x86"]
-        int i = 0
-        for (String name : names) {
+        for (String name : forNames) {
             def cleanTask = project.tasks.register("xmakeCleanFor" + name, XMakeCleanTask, new Action<XMakeCleanTask>() {
                 @Override
                 void execute(XMakeCleanTask task) {
-                    task.taskContext = new XMakeTaskContext(extension, project, logger, archs[i])
+                    String forName = task.name.split("For")[1]
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
                 }
             })
             cleanTask.configure { Task task ->
-                task.dependsOn("xmakeConfigureFor" + name)
+                String forName = task.name.split("For")[1]
+                task.dependsOn("xmakeConfigureFor" + forName)
             }
-            i++
         }
     }
 

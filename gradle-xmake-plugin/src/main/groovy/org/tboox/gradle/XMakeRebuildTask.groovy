@@ -73,5 +73,8 @@ class XMakeRebuildTask extends DefaultTask {
         // do build
         XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
         executor.exec(buildCmdLine(), taskContext.projectDirectory)
+
+        // install artifacts to the native libs directory
+        new XMakeInstallArtifacts(taskContext).install()
     }
 }

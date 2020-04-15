@@ -76,6 +76,11 @@ class XMakeTaskContext {
         return new File(project.buildDir.absoluteFile, "xmake")
     }
 
+    // get native libs directory
+    File getNativeLibsDir() {
+        return new File(project.buildscript.sourceFile.parentFile, "libs/" + arch).absoluteFile
+    }
+
     // get cflags
     List<String> getcFlags() {
         return extension.cFlags
