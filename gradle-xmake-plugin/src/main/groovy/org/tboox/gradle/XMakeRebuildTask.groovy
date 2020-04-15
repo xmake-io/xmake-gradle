@@ -40,6 +40,12 @@ class XMakeRebuildTask extends DefaultTask {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
         parameters.add("-r");
+        Set<String> targets = taskContext.targets
+        if (targets != null && targets.size() > 0) {
+            for (String target: targets) {
+                parameters.add(target)
+            }
+        }
         return parameters;
     }
 

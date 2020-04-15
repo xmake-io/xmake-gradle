@@ -39,7 +39,13 @@ class XMakeCleanTask extends DefaultTask {
     private List<String> buildCmdLine() {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
-        parameters.add("c");
+        parameters.add("clean");
+        Set<String> targets = taskContext.targets
+        if (targets != null && targets.size() > 0) {
+            for (String target: targets) {
+                parameters.add(target)
+            }
+        }
         return parameters;
     }
 

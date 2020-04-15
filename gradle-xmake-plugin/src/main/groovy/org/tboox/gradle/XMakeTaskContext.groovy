@@ -85,4 +85,9 @@ class XMakeTaskContext {
     List<String> getCppFlags() {
         return extension.cppFlags
     }
+
+    // get targets
+    Set<String> getTargets() {
+        return extension.targets
+    }
 }

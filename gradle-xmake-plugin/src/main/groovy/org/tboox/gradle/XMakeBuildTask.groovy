@@ -39,6 +39,13 @@ class XMakeBuildTask extends DefaultTask {
     private List<String> buildCmdLine() {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
+        parameters.add("build");
+        Set<String> targets = taskContext.targets
+        if (targets != null && targets.size() > 0) {
+            for (String target: targets) {
+                parameters.add(target)
+            }
+        }
         return parameters;
     }
 
