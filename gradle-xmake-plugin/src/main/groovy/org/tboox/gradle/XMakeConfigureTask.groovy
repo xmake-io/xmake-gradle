@@ -43,13 +43,17 @@ class XMakeConfigureTask extends DefaultTask {
         parameters.add("-y");
         parameters.add("-p");
         parameters.add("android");
+        if (taskContext.arch != null) {
+            parameters.add("-a");
+            parameters.add(taskContext.arch);
+        }
         parameters.add("--buildir=" + taskContext.buildDirectory.path)
         return parameters;
     }
 
     @TaskAction
     void configure() {
-        
+
         // check
         if (!taskContext.projectFile.isFile()) {
             throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")

@@ -31,7 +31,79 @@ class XMakePluginExtension {
     // enable verbose output
     boolean verbose
 
+    // the configuration arguments
+    List<String> arguments = new ArrayList<>()
+
+    // the c compile flags
+    List<String> cFlags = new ArrayList<>()
+
     // the c++ compile flags
-    String cppFlags
+    List<String> cppFlags = new ArrayList<>()
+
+    // the abi filters
+    Set<String> abiFilters = new HashSet<>()
+
+    // the targets
+    Set<String> targets = new HashSet<>()
+
+    void arguments(String arg) {
+        arguments.add(arg)
+    }
+
+    void arguments(String... args) {
+        arguments.addAll(args.toList())
+    }
+
+    void setArguments(Collection<String> args) {
+        arguments.addAll(args)
+    }
+
+    void cFlags(String flag) {
+        cFlags.add(flag)
+    }
+
+    void cFlags(String... flags) {
+        cFlags.addAll(flags.toList())
+    }
+
+    void setCFlags(Collection<String> flags) {
+        cFlags.addAll(flags)
+    }
+
+    void cppFlags(String flag) {
+        cppFlags.add(flag)
+    }
+
+    void cppFlags(String... flags) {
+        cppFlags.addAll(flags.toList())
+    }
+
+    void setCppFlags(Collection<String> flags) {
+        cppFlags.addAll(flags)
+    }
+
+    void abiFilters(String filter) {
+        abiFilters.add(filter)
+    }
+
+    void abiFilters(String... filters) {
+        abiFilters.addAll(filters.toList())
+    }
+
+    void setAbiFilters(Collection<String> filters) {
+        abiFilters.addAll(filters)
+    }
+
+    void targets(String target) {
+        targets.add(target)
+    }
+
+    void targets(String... targets) {
+        targets.addAll(targets.toList())
+    }
+
+    void setTargets(Collection<String> targets) {
+        abiFilters.addAll(targets)
+    }
 }
 

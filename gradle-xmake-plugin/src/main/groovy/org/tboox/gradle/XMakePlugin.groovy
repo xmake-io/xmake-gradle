@@ -43,18 +43,51 @@ class XMakePlugin implements Plugin<Project> {
         XMakeLogger logger = new XMakeLogger(extension)
 
         // check project file exists (jni/xmake.lua)
-        if (!new XMakeTaskContext(extension, project, logger).projectFile.isFile()) {
+        if (!new XMakeTaskContext(extension, project).projectFile.isFile()) {
             return
         }
 
         // trace
         logger.i(TAG, "activated for project: " + project.name)
 
-        // register task: xmakeConfigure
-        project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+        // register task: xmakeConfigureForXXX
+        registerXMakeConfigureTasks(project, extension, logger)
+    }
+
+    private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
+
+        /*def task1 = */project.tasks.register("xmakeConfigureForArm64", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
             @Override
             void execute(XMakeConfigureTask task) {
-                task.taskContext = new XMakeTaskContext(extension, project, logger)
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "arm64-v8a")
+            }
+        })
+        /*
+        task1.configure { Task task ->
+            task.dependsOn()
+        }*/
+        project.tasks.register("xmakeConfigureForArmv7", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+            @Override
+            void execute(XMakeConfigureTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "armeabi-v7a")
+            }
+        })
+        project.tasks.register("xmakeConfigureForArm", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+            @Override
+            void execute(XMakeConfigureTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "armeabi")
+            }
+        })
+        project.tasks.register("xmakeConfigureForX64", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+            @Override
+            void execute(XMakeConfigureTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "x64")
+            }
+        })
+        project.tasks.register("xmakeConfigureForX86", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+            @Override
+            void execute(XMakeConfigureTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, "x86")
             }
         })
     }

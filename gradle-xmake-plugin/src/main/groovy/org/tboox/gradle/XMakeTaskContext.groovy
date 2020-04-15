@@ -33,8 +33,16 @@ class XMakeTaskContext {
     // the logger
     XMakeLogger logger
 
+    // the build architecture
+    String arch
+
     // the constructor
-    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger) {
+    XMakeTaskContext(XMakePluginExtension extension, Project project) {
+        this.project = project
+        this.extension = extension
+    }
+    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger, String arch) {
+        this.arch = arch
         this.logger = logger
         this.project = project
         this.extension = extension

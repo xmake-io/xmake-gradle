@@ -17,19 +17,22 @@ android {
 
         externalNativeBuild {
 
+            /*
             ndk {
                 abiFilters "armeabi-v7a", "arm64-v8a"
-            }
-            
-            /*
-            cmake {
-                cppFlags "-DTEST"
             }*/
 
             /*
-            xmake {
+            cmake {
                 cppFlags "-DTEST"
+                abiFilters "armeabi-v7a", "arm64-v8a"
             }*/
+
+
+            xmake {
+                cppFlags "-DTEST", "-DTEST2"
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
         }
     }
 
