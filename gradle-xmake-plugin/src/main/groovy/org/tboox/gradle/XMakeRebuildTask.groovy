@@ -40,6 +40,19 @@ class XMakeRebuildTask extends DefaultTask {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
         parameters.add("-r");
+        switch (taskContext.logLevel) {
+            case "warning":
+                parameters.add("-w")
+                break
+            case "verbose":
+                parameters.add("-v")
+                break
+            case "debug":
+                parameters.add("-vD")
+                break
+            default:
+                break
+        }
         Set<String> targets = taskContext.targets
         if (targets != null && targets.size() > 0) {
             for (String target: targets) {

@@ -40,6 +40,16 @@ class XMakeCleanTask extends DefaultTask {
         List<String> parameters = new ArrayList<>();
         parameters.add("xmake");
         parameters.add("clean");
+        switch (taskContext.logLevel) {
+            case "verbose":
+                parameters.add("-v")
+                break
+            case "debug":
+                parameters.add("-vD")
+                break
+            default:
+                break
+        }
         Set<String> targets = taskContext.targets
         if (targets != null && targets.size() > 0) {
             for (String target: targets) {

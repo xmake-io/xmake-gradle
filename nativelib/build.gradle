@@ -47,7 +47,7 @@ android {
         }*/
 
         xmake {
-            verbose true
+            logLevel "verbose"
          //   path "jni/xmake.lua"
         }
     }

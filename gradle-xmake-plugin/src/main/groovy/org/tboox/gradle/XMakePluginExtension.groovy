@@ -28,8 +28,8 @@ class XMakePluginExtension {
     // the build directory
     String buildDir
 
-    // enable verbose output
-    boolean verbose
+    // the log level, e.g. normal, warning, verbose, debug
+    String logLevel
 
     // the configuration arguments
     List<String> arguments = new ArrayList<>()

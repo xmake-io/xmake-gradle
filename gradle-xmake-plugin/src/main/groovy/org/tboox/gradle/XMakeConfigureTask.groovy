@@ -41,6 +41,16 @@ class XMakeConfigureTask extends DefaultTask {
         parameters.add("xmake");
         parameters.add("f");
         parameters.add("-y");
+        switch (taskContext.logLevel) {
+            case "verbose":
+                parameters.add("-v")
+                break
+            case "debug":
+                parameters.add("-vD")
+                break
+            default:
+                break
+        }
         parameters.add("-p");
         parameters.add("android");
         if (taskContext.arch != null) {

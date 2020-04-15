@@ -90,4 +90,13 @@ class XMakeTaskContext {
     Set<String> getTargets() {
         return extension.targets
     }
+
+    // get log level
+    String getLogLevel() {
+        String level = extension.logLevel
+        if (level == null) {
+            level = "normal"
+        }
+        return level
+    }
 }

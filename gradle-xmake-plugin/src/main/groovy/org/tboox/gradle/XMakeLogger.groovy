@@ -38,7 +38,7 @@ class XMakeLogger {
 
     // print the verbose output
     void v(String msg) {
-        if (extension.verbose) {
+        if (extension.logLevel != null && extension.logLevel == "verbose") {
             logger.warn(msg)
         }
     }
