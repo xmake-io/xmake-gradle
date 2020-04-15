@@ -31,7 +31,7 @@ class XMakePlugin implements Plugin<Project> {
     private XMakeLogger logger
 
     // the architecture maps
-    private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x64", X86: "x86"]
+    private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x86_64", X86: "x86"]
 
     // the forName lists
     private List<String> forNames = ["Arm64", "Armv7", "Arm", "X64", "X86"]
@@ -56,20 +56,33 @@ class XMakePlugin implements Plugin<Project> {
             return
         }
 
-        // trace
-        logger.i(TAG, "activated for project: " + project.name)
+        project.afterEvaluate {
 
-        // register tasks: xmakeConfigureForXXX
-        registerXMakeConfigureTasks(project, extension, logger)
+            // trace
+            logger.i(TAG, "activated for project: " + project.name)
 
-        // register tasks: xmakeBuildForXXX
-        registerXMakeBuildTasks(project, extension, logger)
 
-        // register tasks: xmakeRebuildForXXX
-        registerXMakeRebuildTasks(project, extension, logger)
+            // register tasks: xmakeConfigureForXXX
+            registerXMakeConfigureTasks(project, extension, logger)
 
-        // register tasks: xmakeCleanForXXX
-        registerXMakeCleanTasks(project, extension, logger)
+            // register tasks: xmakeBuildForXXX
+            registerXMakeBuildTasks(project, extension, logger)
+
+            // register tasks: xmakeRebuildForXXX
+            registerXMakeRebuildTasks(project, extension, logger)
+
+            // register tasks: xmakeCleanForXXX
+            registerXMakeCleanTasks(project, extension, logger)
+
+            /*
+            def assembleTask = project.tasks.getByName("assemble")
+            if (assembleTask != null) {
+                logger.i(assembleTask.name)
+                assembleTask.configure { Task task ->
+                    task.dependsOn("xmakeBuildForArm64")
+                }
+            }*/
+        }
     }
 
     private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
@@ -113,6 +126,18 @@ class XMakePlugin implements Plugin<Project> {
                 String forName = task.name.split("For")[1]
                 task.dependsOn("xmakeConfigureFor" + forName)
             }
+        }
+        def rebuildTask = project.tasks.register("xmakeRebuild", XMakeRebuildTask, new Action<XMakeRebuildTask>() {
+            @Override
+            void execute(XMakeRebuildTask task) {
+            }
+        })
+        rebuildTask.configure { Task task ->
+            task.dependsOn("xmakeRebuildForArm")
+            task.dependsOn("xmakeRebuildForArmv7")
+            task.dependsOn("xmakeRebuildForArm64")
+            task.dependsOn("xmakeRebuildForX86")
+            task.dependsOn("xmakeRebuildForX64")
         }
     }
 
