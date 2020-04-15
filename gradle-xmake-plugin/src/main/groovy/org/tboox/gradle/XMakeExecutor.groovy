@@ -84,7 +84,7 @@ class XMakeExecutor {
             // wait for process exit
             int retCode = process.waitFor()
             if (retCode != 0)
-                throw new GradleException(TAG + "exec failed( " + retCode .. ")")
+                throw new GradleException("exec failed( " + retCode .. ")")
         }
         catch (IOException e) {
             throw new GradleScriptException(TAG, e)

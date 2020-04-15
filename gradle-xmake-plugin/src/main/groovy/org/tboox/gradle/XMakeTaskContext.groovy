@@ -96,6 +96,16 @@ class XMakeTaskContext {
         return extension.targets
     }
 
+    // get abi filters
+    Set<String> getAbiFilters() {
+        if (extension.abiFilters == null) {
+            Set<String> filters = new HashSet<>()
+            filters.add("armeabi-v7a")
+            return filters
+        }
+        return extension.abiFilters
+    }
+
     // get log level
     String getLogLevel() {
         String level = extension.logLevel

@@ -62,6 +62,11 @@ class XMakeCleanTask extends DefaultTask {
     @TaskAction
     void clean() {
 
+        // phony task? we need only return it
+        if (taskContext == null) {
+            return
+        }
+
         // check
         if (!taskContext.projectFile.isFile()) {
             throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")

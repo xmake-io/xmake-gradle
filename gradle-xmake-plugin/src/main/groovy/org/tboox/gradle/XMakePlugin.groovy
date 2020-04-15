@@ -33,6 +33,9 @@ class XMakePlugin implements Plugin<Project> {
     // the architecture maps
     private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x86_64", X86: "x86"]
 
+    // the forName maps
+    private Map<String, String> forNameMaps = ["arm64-v8a": "Arm64", "armeabi-v7a": "Armv7", "armeabi": "Arm", "x86_64": "X64", "x86": "X86"]
+
     // the forName lists
     private List<String> forNames = ["Arm64", "Armv7", "Arm", "X64", "X86"]
 
@@ -111,6 +114,24 @@ class XMakePlugin implements Plugin<Project> {
                 task.dependsOn("xmakeConfigureFor" + forName)
             }
         }
+        def buildTask = project.tasks.register("xmakeBuild", XMakeBuildTask, new Action<XMakeBuildTask>() {
+            @Override
+            void execute(XMakeBuildTask task) {
+            }
+        })
+        buildTask.configure { Task task ->
+            if (extension.abiFilters != null) {
+                for (String filter: extension.abiFilters) {
+                    String forName = forNameMaps[filter]
+                    if (forName == null) {
+                        throw new GradleException("invalid abiFilter: " + filter)
+                    }
+                    task.dependsOn("xmakeBuildFor" + forName)
+                }
+            } else {
+                task.dependsOn("xmakeBuildForArmv7")
+            }
+        }
     }
 
     private registerXMakeRebuildTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
@@ -133,11 +154,17 @@ class XMakePlugin implements Plugin<Project> {
             }
         })
         rebuildTask.configure { Task task ->
-            task.dependsOn("xmakeRebuildForArm")
-            task.dependsOn("xmakeRebuildForArmv7")
-            task.dependsOn("xmakeRebuildForArm64")
-            task.dependsOn("xmakeRebuildForX86")
-            task.dependsOn("xmakeRebuildForX64")
+            if (extension.abiFilters != null) {
+                for (String filter: extension.abiFilters) {
+                    String forName = forNameMaps[filter]
+                    if (forName == null) {
+                        throw new GradleException("invalid abiFilter: " + filter)
+                    }
+                    task.dependsOn("xmakeRebuildFor" + forName)
+                }
+            } else {
+                task.dependsOn("xmakeRebuildForArmv7")
+            }
         }
     }
 
@@ -155,6 +182,23 @@ class XMakePlugin implements Plugin<Project> {
                 task.dependsOn("xmakeConfigureFor" + forName)
             }
         }
+        def cleanTask = project.tasks.register("xmakeClean", XMakeCleanTask, new Action<XMakeCleanTask>() {
+            @Override
+            void execute(XMakeCleanTask task) {
+            }
+        })
+        cleanTask.configure { Task task ->
+            if (extension.abiFilters != null) {
+                for (String filter: extension.abiFilters) {
+                    String forName = forNameMaps[filter]
+                    if (forName == null) {
+                        throw new GradleException("invalid abiFilter: " + filter)
+                    }
+                    task.dependsOn("xmakeCleanFor" + forName)
+                }
+            } else {
+                task.dependsOn("xmakeCleanForArmv7")
+            }
+        }
     }
-
 }
