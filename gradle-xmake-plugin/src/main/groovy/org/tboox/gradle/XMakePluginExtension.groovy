@@ -29,7 +29,7 @@ class XMakePluginExtension {
     String buildDir
 
     // enable verbose output
-    Boolean verbose
+    boolean verbose
 
     // the c++ compile flags
     String cppFlags

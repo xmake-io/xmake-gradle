@@ -30,8 +30,12 @@ class XMakeTaskContext {
     // the plugin extension
     XMakePluginExtension extension
 
+    // the logger
+    XMakeLogger logger
+
     // the constructor
-    XMakeTaskContext(XMakePluginExtension extension, Project project) {
+    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger) {
+        this.logger = logger
         this.project = project
         this.extension = extension
     }

@@ -22,26 +22,29 @@ package org.tboox.gradle
 
 import org.gradle.api.GradleException
 import org.gradle.api.GradleScriptException
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 
 class XMakeExecutor {
 
     // tag
-    private final String TAG = "[xmake]: "
+    private final String TAG = "executor"
 
     // the logger
-    private final Logger logger = Logging.getLogger("xmake")
+    XMakeLogger logger
+
+    // the constructor
+    XMakeExecutor(XMakeLogger logger) {
+        this.logger = logger
+    }
 
     // execute process
     protected void exec(List<String> cmdLine, File workingFolder) throws GradleException {
 
         // log command line parameters
-        StringBuilder sb = new StringBuilder(TAG + "exec: ")
+        StringBuilder sb = new StringBuilder(">> ")
         for (String s : cmdLine) {
             sb.append(s).append(" ")
         }
-        logger.warn(sb.toString())
+        logger.i(sb.toString())
 
         // build process
         ProcessBuilder pb = new ProcessBuilder(cmdLine)
@@ -59,12 +62,12 @@ class XMakeExecutor {
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))
             String line
             while ((line = reader.readLine()) != null) {
-                logger.warn(line)
+                logger.i(line)
             }
             if ( null != (line = errorReader.readLine()) ) {
-                logger.error(TAG + "errors: ")
+                logger.e("errors: ")
                 while (line != null) {
-                    logger.error(line)
+                    logger.e(line)
                     line = errorReader.readLine()
                 }
             }

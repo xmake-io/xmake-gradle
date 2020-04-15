@@ -21,16 +21,11 @@
 package org.tboox.gradle
 
 import org.gradle.api.*
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 
 class XMakePlugin implements Plugin<Project> {
 
-    // the logger
-    private final Logger logger = Logging.getLogger("xmake")
-
     // tag
-    private final String TAG = "[xmake]: "
+    private final String TAG = "plugin"
 
     @Override
     void apply(Project project) {
@@ -44,20 +39,22 @@ class XMakePlugin implements Plugin<Project> {
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 
+        // init logger
+        XMakeLogger logger = new XMakeLogger(extension)
+
         // check project file exists (jni/xmake.lua)
-        if (!new XMakeTaskContext(extension, project).projectFile.isFile()) {
+        if (!new XMakeTaskContext(extension, project, logger).projectFile.isFile()) {
             return
         }
 
-        // TODO set verbose level
         // trace
-        logger.warn(TAG + "activated for project: " + project.name)
+        logger.i(TAG, "activated for project: " + project.name)
 
         // register task: xmakeConfigure
         project.tasks.register("xmakeConfigure", XMakeConfigureTask, new Action<XMakeConfigureTask>() {
             @Override
             void execute(XMakeConfigureTask task) {
-                task.taskContext = new XMakeTaskContext(extension, project)
+                task.taskContext = new XMakeTaskContext(extension, project, logger)
             }
         })
     }

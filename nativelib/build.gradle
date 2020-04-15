@@ -45,6 +45,7 @@ android {
         }*/
 
         xmake {
+            verbose true
          //   path "jni/xmake.lua"
         }
     }

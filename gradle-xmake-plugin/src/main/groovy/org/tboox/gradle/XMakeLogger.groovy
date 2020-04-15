@@ -20,7 +20,52 @@
  */
 package org.tboox.gradle
 
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+
 class XMakeLogger {
-    
+
+    // the logger
+    private final Logger logger = Logging.getLogger("xmake")
+
+    // enable verbose output?
+    private XMakePluginExtension extension
+
+    // the constructor
+    XMakeLogger(XMakePluginExtension extension) {
+        this.extension = extension
+    }
+
+    // print the verbose output
+    void v(String msg) {
+        if (extension.verbose) {
+            logger.warn(msg)
+        }
+    }
+
+    // print the verbose output
+    void v(String tag, String msg) {
+        v("[xmake/" + tag + "]: " + msg)
+    }
+
+    // print the info output
+    void i(String msg) {
+        logger.warn(msg)
+    }
+
+    // print the info output
+    void i(String tag, String msg) {
+        i("[xmake/" + tag + "]: " + msg)
+    }
+
+    // print the error output
+    void e(String msg) {
+        logger.warn(msg)
+    }
+
+    // print the error output
+    void e(String tag, String msg) {
+        e("[xmake/" + tag + "]: " + msg)
+    }
 }
 

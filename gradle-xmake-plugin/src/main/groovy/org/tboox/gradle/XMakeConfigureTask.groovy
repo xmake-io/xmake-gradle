@@ -22,18 +22,9 @@ package org.tboox.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.logging.LogLevel
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.TaskAction
 
 class XMakeConfigureTask extends DefaultTask {
-
-    // tag
-    private final String TAG = "[xmake]: "
-
-    // the logger
-    private final Logger logger = Logging.getLogger("xmake")
 
     // the task context
     XMakeTaskContext taskContext
@@ -58,17 +49,14 @@ class XMakeConfigureTask extends DefaultTask {
 
     @TaskAction
     void configure() {
-
-        // trace
-        logger.warn(TAG + "do configure")
-
+        
         // check
         if (!taskContext.projectFile.isFile()) {
             throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")
         }
 
         // do configure
-        XMakeExecutor executor = new XMakeExecutor()
+        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
         executor.exec(buildCmdLine(), taskContext.projectDirectory)
     }
 }
