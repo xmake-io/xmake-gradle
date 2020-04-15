@@ -73,7 +73,7 @@ class XMakeTaskContext {
                 return new File(project.buildscript.sourceFile.parentFile, buildDir).absoluteFile
             }
         }
-        return project.buildDir.absoluteFile
+        return new File(project.buildDir.absoluteFile, "xmake")
     }
 
     // get cflags
