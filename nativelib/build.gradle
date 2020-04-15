@@ -30,6 +30,7 @@ android {
 
             xmake {
                 cppFlags "-DTEST", "-DTEST2"
+                buildMode "debug"
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
@@ -47,8 +48,8 @@ android {
         }*/
 
         xmake {
-            logLevel "verbose"
-         //   path "jni/xmake.lua"
+            // logLevel "verbose"
+            // path "jni/xmake.lua"
         }
     }
 

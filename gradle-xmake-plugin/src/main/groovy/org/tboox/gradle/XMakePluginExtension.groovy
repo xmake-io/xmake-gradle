@@ -28,6 +28,9 @@ class XMakePluginExtension {
     // the build directory
     String buildDir
 
+    // the build mode, e.g. debug, release, ..
+    String buildMode
+
     // the log level, e.g. normal, warning, verbose, debug
     String logLevel
 

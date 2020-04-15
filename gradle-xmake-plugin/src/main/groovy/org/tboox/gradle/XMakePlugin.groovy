@@ -77,14 +77,13 @@ class XMakePlugin implements Plugin<Project> {
             // register tasks: xmakeCleanForXXX
             registerXMakeCleanTasks(project, extension, logger)
 
-            /*
-            def assembleTask = project.tasks.getByName("assemble")
-            if (assembleTask != null) {
-                logger.i(assembleTask.name)
-                assembleTask.configure { Task task ->
-                    task.dependsOn("xmakeBuildForArm64")
+            // register to the beginning of preBuild task
+            def preBuildTask = project.tasks.getByName("preBuild")
+            if (preBuildTask != null) {
+                preBuildTask.configure { Task task ->
+                    task.dependsOn("xmakeBuild")
                 }
-            }*/
+            }
         }
     }
 

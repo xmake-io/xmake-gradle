@@ -34,18 +34,18 @@ class XMakeTaskContext {
     XMakeLogger logger
 
     // the build architecture
-    String arch
+    String buildArch
 
     // the constructor
     XMakeTaskContext(XMakePluginExtension extension, Project project) {
         this.project = project
         this.extension = extension
     }
-    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger, String arch) {
-        this.arch = arch
+    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger, String buildArch) {
         this.logger = logger
         this.project = project
         this.extension = extension
+        this.buildArch = buildArch
     }
 
     // get project file
@@ -78,7 +78,7 @@ class XMakeTaskContext {
 
     // get native libs directory
     File getNativeLibsDir() {
-        return new File(project.buildscript.sourceFile.parentFile, "libs/" + arch).absoluteFile
+        return new File(project.buildscript.sourceFile.parentFile, "libs/" + buildArch).absoluteFile
     }
 
     // get cflags
@@ -113,5 +113,10 @@ class XMakeTaskContext {
             level = "normal"
         }
         return level
+    }
+
+    // get build mode
+    String getBuildMode() {
+        return extension.buildMode
     }
 }

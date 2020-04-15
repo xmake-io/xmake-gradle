@@ -53,9 +53,13 @@ class XMakeConfigureTask extends DefaultTask {
         }
         parameters.add("-p");
         parameters.add("android");
-        if (taskContext.arch != null) {
+        if (taskContext.buildArch != null) {
             parameters.add("-a");
-            parameters.add(taskContext.arch);
+            parameters.add(taskContext.buildArch);
+        }
+        if (taskContext.buildMode != null) {
+            parameters.add("-m");
+            parameters.add(taskContext.buildMode);
         }
         List<String> cFlags = taskContext.cFlags
         if (cFlags != null && cFlags.size() > 0) {
