@@ -105,6 +105,9 @@ JNI工程结构
 
 ```
 projectdir
+  - src
+    - main
+      - java
   - jni
     - xmake.lua
     - *.cpp
@@ -126,16 +129,16 @@ android {
     defaultConfig {
         externalNativeBuild {
             xmake {
-                // append the global cflags
+                // 追加设置全局c编译flags
                 cFlags "-DTEST"
 
-                // append the global cppflags
+                // 追加设置全局c++编译flags
                 cppFlags "-DTEST", "-DTEST2"
 
-                // switch the build mode to `debug` for `xmake f -m debug`
+                // 设置切换编译模式，与`xmake f -m debug`的配置对应，具体模式值根据自己的xmake.lua设置而定
                 buildMode "debug"
 
-                // set abi filters
+                // 设置需要编译的abi列表，支持：armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
@@ -143,22 +146,23 @@ android {
 
     externalNativeBuild {
         xmake {
-            // enable xmake and set xmake.lua project file path
+            // 设置jni工程中xmake.lua根文件路径，这是必须的，不设置就不会启用jni编译
             path "jni/xmake.lua"
 
-            // enable verbose output, e.g. verbose, warning, normal
+            // 启用详细输出，会显示完整编译命令行参数，其他值：verbose, warning, normal
             logLevel "verbose"
 
-            // set c++stl, e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
+            // 指定c++ stl库，默认不指定会使用c++_static，其他值：c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
             stl "c++_static"
 
-            // disable stdc++ library
+            // 禁用stdc++库，默认是启用的
             // stdcxx false
 
-            // set the given ndk directory path
+            // 设置其他指定的ndk目录路径 （这是可选的，默认xmake会自动从$ANDROID_NDK_HOME或者`~/Library/Android/sdk/ndk-bundle`中检测）
+            // 当然如果用户通过`xmake g --ndk=xxx`配置了全局设置，也会自动从这个里面检测
             // ndk "/Users/ruki/files/android-ndk-r20b/"
 
-            // set sdk version of ndk
+            // 设置ndk中sdk版本
             // sdkver 21
         }
     }

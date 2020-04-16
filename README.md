@@ -97,12 +97,15 @@ android {
 }
 ```
 
-#### jni
+#### JNI
 
-The jni project structure:
+The JNI project structure:
 
 ```
 projectdir
+  - src
+    - main
+      - java
   - jni
     - xmake.lua
     - *.cpp
@@ -124,16 +127,16 @@ android {
     defaultConfig {
         externalNativeBuild {
             xmake {
-                // append the global cflags
+                // append the global cflags (optional)
                 cFlags "-DTEST"
 
-                // append the global cppflags
+                // append the global cppflags (optional)
                 cppFlags "-DTEST", "-DTEST2"
 
-                // switch the build mode to `debug` for `xmake f -m debug`
+                // switch the build mode to `debug` for `xmake f -m debug` (optional)
                 buildMode "debug"
 
-                // set abi filters
+                // set abi filters (optional), e.g. armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
@@ -144,19 +147,19 @@ android {
             // enable xmake and set xmake.lua project file path
             path "jni/xmake.lua"
 
-            // enable verbose output, e.g. verbose, warning, normal
+            // enable verbose output (optional), e.g. verbose, warning, normal
             logLevel "verbose"
 
-            // set c++stl, e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
+            // set c++stl (optional), e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
             stl "c++_static"
 
-            // disable stdc++ library
+            // disable stdc++ library (optional)
             // stdcxx false
 
-            // set the given ndk directory path
+            // set the given ndk directory path (optional)
             // ndk "/Users/ruki/files/android-ndk-r20b/"
 
-            // set sdk version of ndk
+            // set sdk version of ndk (optional)
             // sdkver 21
         }
     }
