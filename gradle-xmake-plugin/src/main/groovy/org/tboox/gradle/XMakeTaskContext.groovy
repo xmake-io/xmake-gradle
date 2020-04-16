@@ -76,6 +76,11 @@ class XMakeTaskContext {
         return new File(project.buildDir.absoluteFile, "xmake")
     }
 
+    // get native root libs directory
+    File getNativeRootLibsDir() {
+        return new File(project.buildscript.sourceFile.parentFile,"libs").absoluteFile
+    }
+
     // get native libs directory
     File getNativeLibsDir() {
         return new File(project.buildscript.sourceFile.parentFile, "libs/" + buildArch).absoluteFile

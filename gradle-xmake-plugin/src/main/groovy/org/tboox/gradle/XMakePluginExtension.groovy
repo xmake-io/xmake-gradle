@@ -22,6 +22,9 @@ package org.tboox.gradle
 
 class XMakePluginExtension {
 
+    // TODO
+    // xmake program
+
     // the project path (e.g. jni/xmake.lua)
     String path
 
