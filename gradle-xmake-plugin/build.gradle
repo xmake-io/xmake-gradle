@@ -1,6 +1,6 @@
 plugins {
     // to publish the plugin at the gradle plugin portal
-    id "com.gradle.plugin-publish" version "0.10.1"
+    id "com.gradle.plugin-publish" version "0.11.0"
     // Apply the java-library plugin to add support for Java Library
     id 'java-gradle-plugin'
     id 'maven-publish'
@@ -35,11 +35,11 @@ gradlePlugin {
 pluginBundle {
     website = 'https://github.com/xmake/xmake-gradle'
     vcsUrl = 'https://github.com/xmake/xmake-gradle'
-    description = 'Plugin to use Xmake from Gradle'
+    description = 'A gradle plugin that integrates xmake seamlessly'
     tags = ['xmake', 'c++', 'lua']
 
     plugins {
-        cmakePlugin {
+        xmakePlugin {
             // id is captured from java-gradle-plugin configuration
             displayName = 'Gradle XMake plugin'
         }
