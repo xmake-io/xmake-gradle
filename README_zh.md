@@ -45,10 +45,174 @@ xmake-gradle是一个无缝整合xmake的gradle插件。
 * [Github](https://github.com/xmake-io/xmake-gradle)
 * [Gitee](https://gitee.com/tboox/xmake-gradle)
 
-## 编译插件
+
+
+## 准备工作
+
+我们需要先安装好对应的xmake命令行工具，关于安装说明见：[xmake](https://github.com/xmake-io/xmake)。
+
+## 应用插件
+
+### 通过插件DSL集成
+
+```
+plugins {
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.1'
+}
+```
+
+### 被废弃的插件集成方式
+
+```
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath 'org.tboox:gradle-xmake-plugin:1.0.1'
+  }
+  repositories {
+    mavenCentral()
+  }
+}
+
+apply plugin: "org.tboox.gradle-xmake-plugin"
+```
+
+## 配置
+
+### 最简单的配置示例
+
+如果我们添加`xmake.lua`文件到`projectdir/jni/xmake.lua`，那么我们只需要在build.gradle中启用生效了xmake指定下对应的JNI工程路径即可。
+
+#### build.gradle
+
+```
+android {
+    externalNativeBuild {
+        xmake {
+            path "jni/xmake.lua"
+        }
+    }
+}
+```
+
+#### JNI
+
+JNI工程结构
+
+```
+projectdir
+  - jni
+    - xmake.lua
+    - *.cpp
+```
+
+xmake.lua:
+
+```lua
+add_rules("mode.debug", "mode.release")
+target("nativelib")
+    set_kind("shared")
+    add_files("nativelib.cc")
+```
+
+### 更多Gradle配置说明
+
+```
+android {
+    defaultConfig {
+        externalNativeBuild {
+            xmake {
+                // append the global cflags
+                cFlags "-DTEST"
+
+                // append the global cppflags
+                cppFlags "-DTEST", "-DTEST2"
+
+                // switch the build mode to `debug` for `xmake f -m debug`
+                buildMode "debug"
+
+                // set abi filters
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        xmake {
+            // enable xmake and set xmake.lua project file path
+            path "jni/xmake.lua"
+
+            // enable verbose output, e.g. verbose, warning, normal
+            logLevel "verbose"
+
+            // set c++stl, e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
+            stl "c++_static"
+
+            // disable stdc++ library
+            // stdcxx false
+
+            // set the given ndk directory path
+            // ndk "/Users/ruki/files/android-ndk-r20b/"
+
+            // set sdk version of ndk
+            // sdkver 21
+        }
+    }
+}
+```
+
+## 编译JNI
+
+### 编译JNI并且生成APK
+
+当`gradle-xmake-plugin`插件被应用生效后，`xmakeBuild`任务会自动注入到现有的`assemble`任务中去，自动执行jni库编译和集成。
+
+```console
+$ ./gradlew app:assembleDebug
+> Task :nativelib:xmakePrebuild
+> Task :nativelib:xmakeConfigureForArm64
+> Task :nativelib:xmakeBuildForArm64
+>> xmake build
+[ 50%]: ccache compiling.debug nativelib.cc
+[ 75%]: linking.debug libnativelib.so
+[100%]: build ok!
+>> install artifacts to /Users/ruki/projects/personal/xmake-gradle/nativelib/libs/arm64-v8a
+> Task :nativelib:xmakeConfigureForArmv7
+> Task :nativelib:xmakeBuildForArmv7
+>> xmake build
+[ 50%]: ccache compiling.debug nativelib.cc
+[ 75%]: linking.debug libnativelib.so
+[100%]: build ok!
+>> install artifacts to /Users/ruki/projects/personal/xmake-gradle/nativelib/libs/armeabi-v7a
+> Task :nativelib:preBuild
+> Task :nativelib:assemble
+> Task :app:assembleDebug
+```
+
+### 强制重建JNI
+
+```console
+$ ./gradlew nativelib:xmakeRebuild
+```
+
+## Development
+
+### 编译插件
 
 ```console
 $ ./gradlew gradle-xmake-plugin:assemble
+```
+
+### 发布插件
+
+请参考：[https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/](https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/)
+
+```console
+$ ./gradlew gradle-xmake-plugin:publishPlugins
 ```
 
 ## 联系方式

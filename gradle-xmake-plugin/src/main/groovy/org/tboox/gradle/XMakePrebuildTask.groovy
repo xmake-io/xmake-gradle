@@ -67,6 +67,11 @@ class XMakePrebuildTask extends DefaultTask {
         // trace
         taskContext.logger.i(">> clean artifacts from " + taskContext.nativeRootLibsDir.absolutePath)
 
+        // ensure build directory exists
+        if (!taskContext.buildDirectory.exists()) {
+            taskContext.buildDirectory.mkdirs()
+        }
+
         // install artifacts to the native libs directory
         File installArtifactsScriptFile = new File(taskContext.buildDirectory, "clean_artifacts.lua")
         installArtifactsScriptFile.withWriter { out ->
