@@ -51,15 +51,16 @@ class XMakePlugin implements Plugin<Project> {
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 
-        // init logger
-        logger = new XMakeLogger(extension)
-
-        // check project file exists (jni/xmake.lua)
-        if (!new XMakeTaskContext(extension, project).projectFile.isFile()) {
-            return
-        }
-
         project.afterEvaluate {
+
+            // check project file exists (jni/xmake.lua)
+            File projectFile = new XMakeTaskContext(extension, project).projectFile
+            if (projectFile == null || !projectFile.isFile()) {
+                return
+            }
+
+            // init logger
+            logger = new XMakeLogger(extension)
 
             // trace
             logger.i(TAG, "activated for project: " + project.name)

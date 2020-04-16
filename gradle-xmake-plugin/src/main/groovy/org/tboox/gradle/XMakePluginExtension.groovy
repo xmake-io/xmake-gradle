@@ -25,6 +25,9 @@ class XMakePluginExtension {
     // TODO
     // xmake program
 
+    // the ndk path
+    String ndk
+
     // the project path (e.g. jni/xmake.lua)
     String path
 

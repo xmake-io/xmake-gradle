@@ -52,7 +52,7 @@ class XMakeTaskContext {
     File getProjectFile() {
         String path = extension.path
         if (path == null) {
-            path = "jni/xmake.lua"
+            return null
         }
         return new File(project.buildscript.sourceFile.parentFile, path).absoluteFile
     }
