@@ -87,6 +87,23 @@ class XMakeConfigureTask extends DefaultTask {
             }
             parameters.add("--cxxflags=\"" + sb.toString() + "\"")
         }
+        File ndkDir = taskContext.getNDKDirectory()
+        if (ndkDir != null) {
+            parameters.add("--ndk=" + ndkDir.path)
+        }
+        String sdkver = taskContext.getSDKVersion()
+        if (sdkver != null) {
+            parameters.add("--ndk_sdkver=" + sdkver)
+        }
+        Boolean stdcxx = taskContext.stdcxx
+        if (stdcxx != null && stdcxx == false) {
+            parameters.add("--ndk_stdcxx=n")
+        } else {
+            String stl = taskContext.stl
+            if (stl != null) {
+                parameters.add("--ndk_cxxstl=" + stl)
+            }
+        }
         parameters.add("--buildir=" + taskContext.buildDirectory.path)
         return parameters;
     }

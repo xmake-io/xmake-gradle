@@ -20,16 +20,27 @@
  */
 package org.tboox.gradle
 
+import com.sun.org.apache.xpath.internal.operations.Bool
+
 class XMakePluginExtension {
 
     // TODO
     // xmake program
 
+    // the project path (e.g. jni/xmake.lua)
+    String path
+
     // the ndk path
     String ndk
 
-    // the project path (e.g. jni/xmake.lua)
-    String path
+    // the ndk sdk version
+    Integer sdkver
+
+    // the c++ stl library, e.g. stlport_static, stlport_shared, c++_shared, c++_static, gnustl_shared, gnustl_static
+    String stl
+
+    // use stdc++ library? enabled by default
+    Boolean stdcxx
 
     // the build directory
     String buildDir

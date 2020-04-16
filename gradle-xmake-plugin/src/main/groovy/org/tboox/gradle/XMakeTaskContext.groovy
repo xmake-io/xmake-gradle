@@ -57,6 +57,40 @@ class XMakeTaskContext {
         return new File(project.buildscript.sourceFile.parentFile, path).absoluteFile
     }
 
+    // get ndk directory
+    File getNDKDirectory() {
+        String ndk = extension.ndk
+        if (ndk != null) {
+            return new File(ndk).absoluteFile
+        }
+        return null
+    }
+
+    // get ndk sdk version
+    String getSDKVersion() {
+        Integer sdkver = extension.sdkver
+        if (sdkver != null) {
+            return sdkver.toString()
+        }
+        return null
+    }
+
+    // enable stdc++?
+    Boolean getStdcxx() {
+        return extension.stdcxx
+    }
+
+    // get c++ stl library
+    String getStl() {
+        String stl = extension.stl
+        if (stl == "c++_static") {
+            stl = "llvmstl_static"
+        } else if (stl == "c++_shared") {
+            stl = "llvmstl_shared"
+        }
+        return stl
+    }
+
     // get project directory
     File getProjectDirectory() {
         return projectFile.parentFile
