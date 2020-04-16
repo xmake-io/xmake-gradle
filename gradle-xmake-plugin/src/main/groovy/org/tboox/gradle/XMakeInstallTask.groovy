@@ -15,21 +15,24 @@
  * Copyright (C) 2020-present, TBOOX Open Source Group.
  *
  * @author      ruki
- * @file        XMakeInstallArtifacts.groovy
+ * @file        XMakeInstallTask.groovy
  *
  */
 package org.tboox.gradle
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.tasks.TaskAction
 
-class XMakeInstallArtifacts  {
+class XMakeInstallTask extends DefaultTask {
 
     // the task context
     XMakeTaskContext taskContext
 
     // the constructor
-    XMakeInstallArtifacts(XMakeTaskContext taskContext) {
-        this.taskContext = taskContext
+    XMakeInstallTask() {
+        setGroup("xmake")
+        setDescription("Do install artifacts with XMake")
     }
 
     // build command line
@@ -48,7 +51,27 @@ class XMakeInstallArtifacts  {
                 break
         }
         parameters.add(installArtifactsScriptFile.absolutePath)
+
+        // pass build/libs directory
+        parameters.add(new File(taskContext.buildDirectory, "libs").path)
+
+        // pass app/libs directory
         parameters.add(taskContext.nativeLibsDir.absolutePath)
+
+        // pass abiFilters
+        int i = 0
+        StringBuilder abiFiltersList = new StringBuilder("")
+        Set<String> abiFilters = taskContext.abiFilters
+        for (String filter: abiFilters) {
+            if (i > 0) {
+                abiFiltersList.append(",")
+            }
+            abiFiltersList.append(filter)
+            i++
+        }
+        parameters.add(abiFiltersList.toString())
+
+        // pass targets
         Set<String> targets = taskContext.targets
         if (targets != null && targets.size() > 0) {
             for (String target: targets) {
@@ -58,7 +81,7 @@ class XMakeInstallArtifacts  {
         return parameters;
     }
 
-    // install artifacts
+    @TaskAction
     void install() {
 
         // trace

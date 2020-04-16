@@ -62,6 +62,34 @@ class XMakeBuildTask extends DefaultTask {
         return parameters;
     }
 
+    // build install command line
+    private List<String> buildInstallCmdLine() {
+        List<String> parameters = new ArrayList<>();
+        parameters.add("xmake");
+        parameters.add("install");
+        switch (taskContext.logLevel) {
+            case "verbose":
+                parameters.add("-v")
+                break
+            case "debug":
+                parameters.add("-vD")
+                break
+            default:
+                parameters.add("-q")
+                break
+        }
+        File libsDir = new File(taskContext.buildDirectory, "libs/" + taskContext.buildArch)
+        parameters.add("-o")
+        parameters.add(libsDir.path)
+        Set<String> targets = taskContext.targets
+        if (targets != null && targets.size() > 0) {
+            for (String target: targets) {
+                parameters.add(target)
+            }
+        }
+        return parameters;
+    }
+
     @TaskAction
     void build() {
 
@@ -76,10 +104,11 @@ class XMakeBuildTask extends DefaultTask {
         }
 
         // do build
-        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
-        executor.exec(buildCmdLine(), taskContext.projectDirectory)
+        XMakeExecutor buildExecutor = new XMakeExecutor(taskContext.logger)
+        buildExecutor.exec(buildCmdLine(), taskContext.projectDirectory)
 
-        // install artifacts to the native libs directory
-        new XMakeInstallArtifacts(taskContext).install()
+        // do install
+        XMakeExecutor installExecutor = new XMakeExecutor(taskContext.logger, false)
+        installExecutor.exec(buildInstallCmdLine(), taskContext.projectDirectory)
     }
 }

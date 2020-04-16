@@ -28,12 +28,11 @@ android {
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }*/
 
-            /*
             xmake {
                 cppFlags "-DTEST", "-DTEST2"
                 buildMode "debug"
                 abiFilters "armeabi-v7a", "arm64-v8a"
-            }*/
+            }
         }
     }
 

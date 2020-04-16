@@ -71,9 +71,6 @@ class XMakePlugin implements Plugin<Project> {
             // trace
             logger.i(TAG, "activated for project: " + project.name)
 
-            // register tasks: xmakePrebuild
-            registerXMakePrebuildTasks(project, extension, logger)
-
             // register tasks: xmakeConfigureForXXX
             registerXMakeConfigureTasks(project, extension, logger)
 
@@ -83,6 +80,9 @@ class XMakePlugin implements Plugin<Project> {
             // register tasks: xmakeRebuildForXXX
             registerXMakeRebuildTasks(project, extension, logger)
 
+            // register tasks: xmakeInstall
+            registerXMakeInstallTasks(project, extension, logger)
+
             // register tasks: xmakeCleanForXXX
             registerXMakeCleanTasks(project, extension, logger)
 
@@ -90,7 +90,7 @@ class XMakePlugin implements Plugin<Project> {
             def preBuildTask = project.tasks.getByName("preBuild")
             if (preBuildTask != null) {
                 preBuildTask.configure { Task task ->
-                    task.dependsOn("xmakeBuild")
+                    task.dependsOn("xmakeInstall")
                 }
             }
 
@@ -104,27 +104,15 @@ class XMakePlugin implements Plugin<Project> {
         }
     }
 
-    private registerXMakePrebuildTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        project.tasks.register("xmakePrebuild", XMakePrebuildTask, new Action<XMakePrebuildTask>() {
-            @Override
-            void execute(XMakePrebuildTask task) {
-                task.taskContext = new XMakeTaskContext(extension, project, logger, null)
-            }
-        })
-    }
-
     private registerXMakeConfigureTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
         for (String name : forNames) {
-            def configureTask = project.tasks.register("xmakeConfigureFor" + name, XMakeConfigureTask, new Action<XMakeConfigureTask>() {
+            project.tasks.register("xmakeConfigureFor" + name, XMakeConfigureTask, new Action<XMakeConfigureTask>() {
                 @Override
                 void execute(XMakeConfigureTask task) {
                     String forName = task.name.split("For")[1]
                     task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
                 }
             })
-            configureTask.configure { Task task ->
-                task.dependsOn("xmakePrebuild")
-            }
         }
     }
 
@@ -193,6 +181,18 @@ class XMakePlugin implements Plugin<Project> {
             } else {
                 task.dependsOn("xmakeRebuildForArmv7")
             }
+        }
+    }
+
+    private registerXMakeInstallTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
+        def installTask = project.tasks.register("xmakeInstall", XMakeInstallTask, new Action<XMakeInstallTask>() {
+            @Override
+            void execute(XMakeInstallTask task) {
+                task.taskContext = new XMakeTaskContext(extension, project, logger, null)
+            }
+        })
+        installTask.configure { Task task ->
+            task.dependsOn("xmakeBuild")
         }
     }
 

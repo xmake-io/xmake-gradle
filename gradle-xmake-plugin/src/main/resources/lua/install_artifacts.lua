@@ -2,16 +2,8 @@
 import("core.project.config")
 import("core.project.project")
 
--- main entry
-function main(installdir, ...)
-
-    -- check
-    assert(installdir, "install directory is empty!")
-
-    -- load config
-    config.load()
-
-    -- get targets
+-- get targets
+function _get_targets(...)
     local targets = {}
     local targetNames = table.pack(...)
     if targetNames.n > 0 then
@@ -31,14 +23,29 @@ function main(installdir, ...)
             end
         end
     end
+end
+
+-- install artifacts
+function _install_artifacts(libsdir, installdir, targets, arch)
+
+    -- append arch sub-directory
+    libsdir = path.join(libsdir, arch)
+    installdir = path.join(installdir, arch)
 
     -- install targets
     if not os.isdir(installdir) then
         os.mkdir(installdir)
     end
     for _, target in ipairs(targets) do
-        os.vcp(target:targetfile(), installdir)
+        os.vcp(path.join(libsdir, path.filename(target:targetfile())), installdir)
     end
+end
+
+-- install c++ stl shared library
+function _install_cxxstl(installdir, arch)
+
+    -- append arch sub-directory
+    installdir = path.join(installdir, arch)
 
     -- install stl shared library
     local ndk = get_config("ndk")
@@ -97,6 +104,51 @@ function main(installdir, ...)
         -- do copy
         if cxxstl_sdkdir and toolchains_arch and cxxstl_filename then
             os.vcp(path.join(cxxstl_sdkdir, "libs", toolchains_arch, cxxstl_filename), path.join(installdir, cxxstl_filename))
+        end
+    end
+end
+
+-- clean artifacts
+function _clean_artifacts(installdir, targets, arch)
+
+    -- append arch sub-directory
+    installdir = path.join(installdir, arch)
+
+    -- clean targets artifacts in the install directory
+    for _, target in ipairs(targets) do
+        os.tryrm(path.join(installdir, path.filename(target:targetfile())))
+        if os.emptydir(installdir) then
+            os.tryrm(installdir)
+        end
+    end
+end
+
+-- main entry
+function main(libsdir, installdir, archs, ...)
+
+    -- check
+    assert(libsdir and installdir and archs)
+
+    -- load config
+    config.load()
+
+    -- get abi filters
+    local abi_filters = {}
+    for _, arch in ipairs(archs:split(',', {plain = true})) do
+        abi_filters[arch] = true
+    end
+
+    -- do install or clean
+    local targets = _get_targets(...)
+    if targets and #targets > 0 then
+        for _, arch in ipairs({"armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"}) do
+            if abi_filters[arch] then
+                _install_artifacts(libsdir, installdir, targets, arch)
+                _install_cxxstl(installdir, arch)
+
+            else
+                _clean_artifacts(installdir, targets, arch)
+            end
         end
     end
 end

@@ -72,6 +72,26 @@ class XMakeTaskContext {
     // get ndk sdk version
     String getSDKVersion() {
         Integer sdkver = extension.sdkver
+        /*
+        if (sdkver == null) {
+            // get abiFilters from android.defaultConfig{minSdkVersion}
+            def androidExtension = project.getProperties().get("android")
+            if (androidExtension != null) {
+                if (androidExtension instanceof LibraryExtension) {
+                    LibraryExtension libraryExtension = androidExtension
+                    def defaultConfig = libraryExtension.getDefaultConfig()
+                    if (defaultConfig != null && defaultConfig.minSdkVersion != null) {
+                        sdkver = defaultConfig.minSdkVersion.apiLevel
+                    }
+                } else if (androidExtension instanceof AppExtension) {
+                    AppExtension appExtension = androidExtension
+                    def defaultConfig = appExtension.getDefaultConfig()
+                    if (defaultConfig != null && defaultConfig.minSdkVersion != null) {
+                        sdkver = defaultConfig.minSdkVersion.apiLevel
+                    }
+                }
+            }
+        }*/
         if (sdkver != null) {
             return sdkver.toString()
         }
@@ -113,14 +133,9 @@ class XMakeTaskContext {
         return new File(project.buildDir.absoluteFile, "xmake")
     }
 
-    // get native root libs directory
-    File getNativeRootLibsDir() {
-        return new File(project.buildscript.sourceFile.parentFile,"libs").absoluteFile
-    }
-
     // get native libs directory
     File getNativeLibsDir() {
-        return new File(project.buildscript.sourceFile.parentFile, "libs/" + buildArch).absoluteFile
+        return new File(project.buildscript.sourceFile.parentFile,"libs").absoluteFile
     }
 
     // get cflags
