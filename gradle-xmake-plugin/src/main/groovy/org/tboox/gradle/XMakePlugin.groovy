@@ -47,12 +47,6 @@ class XMakePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
-        // check application/library plugin
-        if (project.plugins.findPlugin("com.android.application") == null
-                && project.plugins.findPlugin("com.android.library") == null) {
-            throw new ProjectConfigurationException("Need android application/library plugin to be applied first", new Throwable())
-        }
-
         // create xmake plugin extension
         XMakePluginExtension extension = project.extensions.create('xmake', XMakePluginExtension)
 

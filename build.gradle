@@ -17,7 +17,7 @@ buildscript {
 
 /*
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.1'
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.5'
 }*/
 
 allprojects {
