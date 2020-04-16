@@ -55,7 +55,7 @@ XMake installed on the system. Available [here](https://github.com/xmake-io/xmak
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.2'
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.3'
 }
 ```
 
@@ -69,7 +69,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.0.2'
+    classpath 'org.tboox:gradle-xmake-plugin:1.0.3'
   }
   repositories {
     mavenCentral()
@@ -174,7 +174,6 @@ The `xmakeBuild` will be injected to `assemble` task automatically if the gradle
 
 ```console
 $ ./gradlew app:assembleDebug
-> Task :nativelib:xmakePrebuild
 > Task :nativelib:xmakeConfigureForArm64
 > Task :nativelib:xmakeBuildForArm64
 >> xmake build

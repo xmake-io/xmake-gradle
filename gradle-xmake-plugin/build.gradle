@@ -8,7 +8,7 @@ plugins {
 apply plugin: 'groovy'
 
 group = "org.tboox"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     // Use jcenter for resolving your dependencies.

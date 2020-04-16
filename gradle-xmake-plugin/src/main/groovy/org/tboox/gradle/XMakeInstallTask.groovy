@@ -20,6 +20,8 @@
  */
 package org.tboox.gradle
 
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.TaskAction
@@ -97,5 +99,36 @@ class XMakeInstallTask extends DefaultTask {
         // do install
         XMakeExecutor executor = new XMakeExecutor(taskContext.logger, false)
         executor.exec(buildCmdLine(installArtifactsScriptFile), taskContext.projectDirectory)
+
+        /* add libs directory to sourceSets
+         *
+            sourceSets {
+                main {
+                    jniLibs.srcDirs = ["libs"]
+                }
+            }
+         */
+        def androidExtension = taskContext.project.getProperties().get("android")
+        if (androidExtension != null) {
+            if (androidExtension instanceof LibraryExtension) {
+                LibraryExtension libraryExtension = androidExtension
+                def sourceSets = libraryExtension.sourceSets
+                if (sourceSets != null) {
+                    def main = sourceSets.getByName("main")
+                    if (main != null && main.jniLibs != null && main.jniLibs.srcDirs != null) {
+                        main.jniLibs.srcDirs("libs")
+                    }
+                }
+            } else if (androidExtension instanceof AppExtension) {
+                AppExtension appExtension = androidExtension
+                def sourceSets = appExtension.sourceSets
+                if (sourceSets != null) {
+                    def main = sourceSets.getByName("main")
+                    if (main != null && main.jniLibs != null && main.jniLibs.srcDirs != null) {
+                        main.jniLibs.srcDirs("libs")
+                    }
+                }
+            }
+        }
     }
 }
