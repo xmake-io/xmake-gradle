@@ -44,6 +44,7 @@ If you want to know more, please refer to:
 * [HomePage](https://xmake.io)
 * [Github](https://github.com/xmake-io/xmake-gradle)
 * [Gitee](https://gitee.com/tboox/xmake-gradle)
+* [GradlePlugin](https://plugins.gradle.org/plugin/org.tboox.gradle-xmake-plugin)
 
 ## Prerequisites
 
