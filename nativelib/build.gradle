@@ -48,12 +48,18 @@ android {
         }*/
 
         xmake {
-            //logLevel "verbose"
+            logLevel "verbose"
             path "jni/xmake.lua"
-            //stl "c++_shared"
+            //stl "c++_static"
             //stdcxx false
             //ndk "/Users/ruki/files/android-ndk-r20b/"
             //sdkver 21
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["libs"]
         }
     }
 
