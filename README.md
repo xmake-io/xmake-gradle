@@ -137,6 +137,7 @@ android {
                 buildMode "debug"
 
                 // set abi filters (optional), e.g. armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
+                // we can also get abiFilters from defaultConfig.ndk.abiFilters
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }

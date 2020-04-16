@@ -139,6 +139,7 @@ android {
                 buildMode "debug"
 
                 // 设置需要编译的abi列表，支持：armeabi, armeabi-v7a, arm64-v8a, x86, x86_64
+                // 如果没有设置的话，我们也支持从defaultConfig.ndk.abiFilters中获取abiFilters
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
