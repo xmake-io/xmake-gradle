@@ -20,6 +20,8 @@
  */
 package org.tboox.gradle
 
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 
 class XMakeTaskContext {
@@ -37,7 +39,8 @@ class XMakeTaskContext {
     String buildArch
 
     // the constructor
-    XMakeTaskContext(XMakePluginExtension extension, Project project) {
+    XMakeTaskContext(XMakePluginExtension extension, Project project, XMakeLogger logger) {
+        this.logger = logger
         this.project = project
         this.extension = extension
     }
@@ -137,12 +140,32 @@ class XMakeTaskContext {
 
     // get abi filters
     Set<String> getAbiFilters() {
-        if (extension.abiFilters == null) {
+        Set<String> abiFilters = extension.abiFilters
+        if (abiFilters == null || abiFilters.size() == 0) {
+            // get abiFilters from android.defaultConfig{ndk{abiFilters}}
+            def androidExtension = project.getProperties().get("android")
+            if (androidExtension != null) {
+                if (androidExtension instanceof LibraryExtension) {
+                    LibraryExtension libraryExtension = androidExtension
+                    def defaultConfig = libraryExtension.getDefaultConfig()
+                    if (defaultConfig != null && defaultConfig.getNdk() != null) {
+                        abiFilters = defaultConfig.getNdk().abiFilters
+                    }
+                } else if (androidExtension instanceof AppExtension) {
+                    AppExtension appExtension = androidExtension
+                    def defaultConfig = appExtension.getDefaultConfig()
+                    if (defaultConfig != null && defaultConfig.getNdk() != null) {
+                        abiFilters = defaultConfig.getNdk().abiFilters
+                    }
+                }
+            }
+        }
+        if (abiFilters == null || abiFilters.size() == 0) {
             Set<String> filters = new HashSet<>()
             filters.add("armeabi-v7a")
             return filters
         }
-        return extension.abiFilters
+        return abiFilters
     }
 
     // get log level

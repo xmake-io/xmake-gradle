@@ -21,6 +21,7 @@ dependencies {
     implementation gradleApi()
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    compileOnly 'com.android.tools.build:gradle:3.5.3'
 }
 
 gradlePlugin {

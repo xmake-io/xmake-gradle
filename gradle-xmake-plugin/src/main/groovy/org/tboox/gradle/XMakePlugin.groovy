@@ -20,6 +20,8 @@
  */
 package org.tboox.gradle
 
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.*
 
 class XMakePlugin implements Plugin<Project> {
@@ -29,6 +31,9 @@ class XMakePlugin implements Plugin<Project> {
 
     // logger
     private XMakeLogger logger
+
+    // project context
+    private XMakeTaskContext projectContext
 
     // the architecture maps
     private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x86_64", X86: "x86"]
@@ -53,14 +58,15 @@ class XMakePlugin implements Plugin<Project> {
 
         project.afterEvaluate {
 
+            // init logger
+            logger = new XMakeLogger(extension)
+
             // check project file exists (jni/xmake.lua)
-            File projectFile = new XMakeTaskContext(extension, project).projectFile
+            projectContext = new XMakeTaskContext(extension, project, logger)
+            File projectFile = projectContext.projectFile
             if (projectFile == null || !projectFile.isFile()) {
                 return
             }
-
-            // init logger
-            logger = new XMakeLogger(extension)
 
             // trace
             logger.i(TAG, "activated for project: " + project.name)
@@ -142,8 +148,8 @@ class XMakePlugin implements Plugin<Project> {
             }
         })
         buildTask.configure { Task task ->
-            if (extension.abiFilters != null) {
-                for (String filter: extension.abiFilters) {
+            if (projectContext.abiFilters != null) {
+                for (String filter: projectContext.abiFilters) {
                     String forName = forNameMaps[filter]
                     if (forName == null) {
                         throw new GradleException("invalid abiFilter: " + filter)
@@ -176,8 +182,8 @@ class XMakePlugin implements Plugin<Project> {
             }
         })
         rebuildTask.configure { Task task ->
-            if (extension.abiFilters != null) {
-                for (String filter: extension.abiFilters) {
+            if (projectContext.abiFilters != null) {
+                for (String filter: projectContext.abiFilters) {
                     String forName = forNameMaps[filter]
                     if (forName == null) {
                         throw new GradleException("invalid abiFilter: " + filter)
@@ -210,8 +216,8 @@ class XMakePlugin implements Plugin<Project> {
             }
         })
         cleanTask.configure { Task task ->
-            if (extension.abiFilters != null) {
-                for (String filter: extension.abiFilters) {
+            if (projectContext.abiFilters != null) {
+                for (String filter: projectContext.abiFilters) {
                     String forName = forNameMaps[filter]
                     if (forName == null) {
                         throw new GradleException("invalid abiFilter: " + filter)
