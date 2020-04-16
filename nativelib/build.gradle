@@ -50,6 +50,7 @@ android {
         xmake {
             logLevel "verbose"
             path "jni/xmake.lua"
+            //program /usr/local/bin/xmake
             //stl "c++_shared"
             //stdcxx false
             //ndk "/Users/ruki/files/android-ndk-r20b/"

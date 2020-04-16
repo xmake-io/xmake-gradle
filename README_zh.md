@@ -57,7 +57,7 @@ xmake-gradle是一个无缝整合xmake的gradle插件。
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.3'
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.4'
 }
 ```
 
@@ -71,7 +71,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.0.3'
+    classpath 'org.tboox:gradle-xmake-plugin:1.0.4'
   }
   repositories {
     mavenCentral()
@@ -155,6 +155,9 @@ android {
 
             // 指定c++ stl库，默认不指定会使用c++_static，其他值：c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
             stl "c++_shared"
+
+            // 设置xmake可执行程序路径（通常不用设置）
+            // program /usr/local/bin/xmake
 
             // 禁用stdc++库，默认是启用的
             // stdcxx false

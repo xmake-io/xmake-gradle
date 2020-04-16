@@ -55,7 +55,7 @@ XMake installed on the system. Available [here](https://github.com/xmake-io/xmak
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.3'
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.4'
 }
 ```
 
@@ -69,7 +69,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.0.3'
+    classpath 'org.tboox:gradle-xmake-plugin:1.0.4'
   }
   repositories {
     mavenCentral()
@@ -153,6 +153,9 @@ android {
 
             // set c++stl (optional), e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
             stl "c++_shared"
+
+            // set the given xmake program path (optional)
+            // program /usr/local/bin/xmake
 
             // disable stdc++ library (optional)
             // stdcxx false

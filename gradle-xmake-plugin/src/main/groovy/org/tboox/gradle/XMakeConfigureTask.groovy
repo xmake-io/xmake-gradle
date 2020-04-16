@@ -38,9 +38,9 @@ class XMakeConfigureTask extends DefaultTask {
     // build command line
     private List<String> buildCmdLine() {
         List<String> parameters = new ArrayList<>();
-        parameters.add("xmake");
-        parameters.add("f");
-        parameters.add("-y");
+        parameters.add(taskContext.program)
+        parameters.add("f")
+        parameters.add("-y")
         switch (taskContext.logLevel) {
             case "verbose":
                 parameters.add("-v")

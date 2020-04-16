@@ -24,8 +24,8 @@ import com.sun.org.apache.xpath.internal.operations.Bool
 
 class XMakePluginExtension {
 
-    // TODO
     // xmake program
+    String program
 
     // the project path (e.g. jni/xmake.lua)
     String path

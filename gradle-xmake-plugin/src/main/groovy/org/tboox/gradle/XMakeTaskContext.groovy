@@ -51,6 +51,15 @@ class XMakeTaskContext {
         this.buildArch = buildArch
     }
 
+    // get xmake program
+    String getProgram() {
+        String program = extension.program
+        if (program == null) {
+            program = "xmake"
+        }
+        return program
+    }
+
     // get project file
     File getProjectFile() {
         String path = extension.path

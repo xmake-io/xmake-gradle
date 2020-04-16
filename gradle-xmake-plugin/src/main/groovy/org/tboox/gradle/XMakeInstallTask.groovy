@@ -40,7 +40,7 @@ class XMakeInstallTask extends DefaultTask {
     // build command line
     private List<String> buildCmdLine(File installArtifactsScriptFile) {
         List<String> parameters = new ArrayList<>();
-        parameters.add("xmake");
+        parameters.add(taskContext.program)
         parameters.add("lua");
         switch (taskContext.logLevel) {
             case "verbose":

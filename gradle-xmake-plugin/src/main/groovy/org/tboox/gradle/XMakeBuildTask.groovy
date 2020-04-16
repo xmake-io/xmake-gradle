@@ -38,8 +38,8 @@ class XMakeBuildTask extends DefaultTask {
     // build command line
     private List<String> buildCmdLine() {
         List<String> parameters = new ArrayList<>();
-        parameters.add("xmake");
-        parameters.add("build");
+        parameters.add(taskContext.program)
+        parameters.add("build")
         switch (taskContext.logLevel) {
             case "warning":
                 parameters.add("-w")
@@ -65,8 +65,8 @@ class XMakeBuildTask extends DefaultTask {
     // build install command line
     private List<String> buildInstallCmdLine() {
         List<String> parameters = new ArrayList<>();
-        parameters.add("xmake");
-        parameters.add("install");
+        parameters.add(taskContext.program)
+        parameters.add("install")
         switch (taskContext.logLevel) {
             case "verbose":
                 parameters.add("-v")

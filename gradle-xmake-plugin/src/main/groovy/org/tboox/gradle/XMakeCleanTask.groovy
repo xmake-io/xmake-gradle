@@ -38,8 +38,8 @@ class XMakeCleanTask extends DefaultTask {
     // build command line
     private List<String> buildCmdLine() {
         List<String> parameters = new ArrayList<>();
-        parameters.add("xmake");
-        parameters.add("clean");
+        parameters.add(taskContext.program)
+        parameters.add("clean")
         switch (taskContext.logLevel) {
             case "verbose":
                 parameters.add("-v")
