@@ -23,13 +23,14 @@ function _get_targets(...)
             end
         end
     end
+    return targets
 end
 
 -- install artifacts
 function _install_artifacts(libsdir, installdir, targets, arch)
 
     -- append arch sub-directory
-    libsdir = path.join(libsdir, arch)
+    libsdir = path.join(libsdir, arch, "lib")
     installdir = path.join(installdir, arch)
 
     -- install targets
