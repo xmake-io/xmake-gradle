@@ -8,17 +8,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
-        classpath fileTree(dir: 'gradle-xmake-plugin/build/libs', include: ['*.jar'])
+        //classpath fileTree(dir: 'gradle-xmake-plugin/build/libs', include: ['*.jar'])
         
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
-
-/*
-plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.5'
-}*/
 
 allprojects {
     repositories {

@@ -1,5 +1,9 @@
+plugins {
+    id 'org.tboox.gradle-xmake-plugin' version '1.0.6'
+}
+
 apply plugin: 'com.android.library'
-apply plugin: "org.tboox.gradle-xmake-plugin"
+//apply plugin: "org.tboox.gradle-xmake-plugin"
 
 android {
     compileSdkVersion 29
