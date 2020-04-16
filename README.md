@@ -151,7 +151,7 @@ android {
             logLevel "verbose"
 
             // set c++stl (optional), e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
-            stl "c++_static"
+            stl "c++_shared"
 
             // disable stdc++ library (optional)
             // stdcxx false

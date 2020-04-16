@@ -153,7 +153,7 @@ android {
             logLevel "verbose"
 
             // 指定c++ stl库，默认不指定会使用c++_static，其他值：c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared
-            stl "c++_static"
+            stl "c++_shared"
 
             // 禁用stdc++库，默认是启用的
             // stdcxx false
