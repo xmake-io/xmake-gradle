@@ -1,5 +1,5 @@
 plugins {
-    id 'org.tboox.gradle-xmake-plugin' version '1.0.6'
+    id 'org.tboox.gradle-xmake-plugin' version '1.0.7'
 }
 
 apply plugin: 'com.android.library'
