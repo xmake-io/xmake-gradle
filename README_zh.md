@@ -56,7 +56,7 @@ xmake-gradle是一个无缝整合xmake的gradle插件。
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.0.6'
+  id 'org.tboox.gradle-xmake-plugin' version '1.0.7'
 }
 ```
 
@@ -70,7 +70,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.0.6'
+    classpath 'org.tboox:gradle-xmake-plugin:1.0.7'
   }
   repositories {
     mavenCentral()
