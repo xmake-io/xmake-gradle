@@ -68,7 +68,7 @@ function _install_cxxstl(installdir, arch)
 
         -- get c++ sdk directory
         local cxxstl_sdkdir
-        if ndk_cxxstl:startswith("llvmstl") then
+        if ndk_cxxstl:startswith("c++") or ndk_cxxstl:startswith("llvmstl") then
             cxxstl_sdkdir = cxxstl_sdkdir_llvmstl
         elseif ndk_cxxstl:startswith("gnustl") then
             cxxstl_sdkdir = cxxstl_sdkdir_gnustl
@@ -94,7 +94,7 @@ function _install_cxxstl(installdir, arch)
 
         -- get stl library
         local cxxstl_filename
-        if ndk_cxxstl == "llvmstl_shared" then
+        if ndk_cxxstl == "c++_shared" or ndk_cxxstl == "llvmstl_shared" then
             cxxstl_filename = "libc++_shared.so"
         elseif ndk_cxxstl == "gnustl_shared" then
             cxxstl_filename = "libgnustl_shared.so"
