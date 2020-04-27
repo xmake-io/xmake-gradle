@@ -75,6 +75,21 @@ class XMakeTaskContext {
         if (ndk != null) {
             return new File(ndk).absoluteFile
         }
+
+        def androidExtension = project.getProperties().get("android")
+        if (androidExtension != null) {
+            if (androidExtension instanceof LibraryExtension) {
+                LibraryExtension libraryExtension = androidExtension
+                if (libraryExtension.ndkDirectory != null && libraryExtension.ndkDirectory.exists()) {
+                    return libraryExtension.ndkDirectory.absoluteFile
+                }
+            } else if (androidExtension instanceof AppExtension) {
+                AppExtension appExtension = androidExtension
+                if (appExtension.ndkDirectory != null && appExtension.ndkDirectory.exists()) {
+                    return appExtension.ndkDirectory.absoluteFile
+                }
+            }
+        }
         return null
     }
 
