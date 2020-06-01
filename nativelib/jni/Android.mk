@@ -18,7 +18,8 @@ include $(CLEAR_VARS)
 DEBUG					:= n
 CRYPT					:= n
 LOCAL_MODULE			:= nativelib
-LOCAL_SRC_FILES			:= nativelib.cc 
+LOCAL_SRC_FILES			:= nativelib.cc
+LOCAL_CXXFLAGS          := -g -O0
 LOCAL_LDLIBS			:= -L$(SYSROOT)/usr/lib -L$(LOCAL_PATH) -llog -lz
 include $(BUILD_SHARED_LIBRARY)
 

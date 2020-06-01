@@ -1,7 +1,6 @@
 plugins {
     id 'org.tboox.gradle-xmake-plugin' version '1.1.0'
 }
-
 apply plugin: 'com.android.library'
 //apply plugin: "org.tboox.gradle-xmake-plugin"
 
@@ -19,10 +18,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
 
-        /*
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
-        }*/
+        }
 
         externalNativeBuild {
 
@@ -32,19 +30,21 @@ android {
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }*/
 
+            /*
             xmake {
                 cppFlags "-DTEST", "-DTEST2"
-                buildMode "debug"
                 abiFilters "armeabi-v7a", "arm64-v8a"
-            }
+            }*/
         }
     }
 
     externalNativeBuild {
+
         /*
         ndkBuild {
             path "jni/Android.mk"
-        }*/
+        }
+        */
 
         /*
         cmake {
@@ -54,6 +54,7 @@ android {
         xmake {
             logLevel "verbose"
             path "jni/xmake.lua"
+            buildMode "debug"
             //program /usr/local/bin/xmake
             //stl "c++_shared"
             //stdcxx false
@@ -63,6 +64,7 @@ android {
     }
 
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
