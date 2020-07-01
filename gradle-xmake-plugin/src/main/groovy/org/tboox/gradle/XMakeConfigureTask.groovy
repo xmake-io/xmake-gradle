@@ -40,6 +40,7 @@ class XMakeConfigureTask extends DefaultTask {
         List<String> parameters = new ArrayList<>();
         parameters.add(taskContext.program)
         parameters.add("f")
+        parameters.add("-c")
         parameters.add("-y")
         switch (taskContext.logLevel) {
             case "verbose":

@@ -129,13 +129,7 @@ class XMakeTaskContext {
 
     // get c++ stl library
     String getStl() {
-        String stl = extension.stl
-        if (stl == "c++_static") {
-            stl = "llvmstl_static"
-        } else if (stl == "c++_shared") {
-            stl = "llvmstl_shared"
-        }
-        return stl
+        return extension.stl
     }
 
     // get project directory

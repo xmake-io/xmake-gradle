@@ -1,5 +1,5 @@
 plugins {
-    id 'org.tboox.gradle-xmake-plugin' version '1.1.0'
+    id 'org.tboox.gradle-xmake-plugin' version '1.1.2'
 }
 apply plugin: 'com.android.library'
 //apply plugin: "org.tboox.gradle-xmake-plugin"
@@ -52,11 +52,11 @@ android {
         }*/
 
         xmake {
-            logLevel "verbose"
+            //logLevel "verbose"
             path "jni/xmake.lua"
             buildMode "debug"
             //program /usr/local/bin/xmake
-            //stl "c++_shared"
+            stl "c++_shared"
             //stdcxx false
             //ndk "/Users/ruki/files/android-ndk-r20b/"
             //sdkver 21
