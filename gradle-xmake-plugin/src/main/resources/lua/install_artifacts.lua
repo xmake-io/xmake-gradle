@@ -51,7 +51,7 @@ function _install_cxxstl(installdir, arch)
     -- install stl shared library
     local ndk = get_config("ndk")
     local ndk_cxxstl = get_config("ndk_cxxstl")
-    local arch = get_config("arch")
+    arch = arch or get_config("arch")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
 
         -- get llvm c++ stl sdk directory
