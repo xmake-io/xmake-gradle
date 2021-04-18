@@ -1,3 +1,6 @@
+set_project("test")
+set_version("1.0.0")
+
 -- add rules: debug/release
 add_rules("mode.debug", "mode.release")
 

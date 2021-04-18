@@ -7,7 +7,8 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.2'
+        //classpath 'com.android.tools.build:gradle:3.5.2'
+        classpath "com.android.tools.build:gradle:7.0.0-alpha14"
         //classpath fileTree(dir: 'gradle-xmake-plugin/build/libs', include: ['*.jar'])
         
         // NOTE: Do not place your application dependencies here; they belong

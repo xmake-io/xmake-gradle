@@ -24,6 +24,8 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.*
 
+import java.util.logging.Logger
+
 class XMakePlugin implements Plugin<Project> {
 
     // tag

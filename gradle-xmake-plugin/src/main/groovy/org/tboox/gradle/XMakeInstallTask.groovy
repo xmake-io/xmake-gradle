@@ -23,12 +23,13 @@ package org.tboox.gradle
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.Internal
 
 class XMakeInstallTask extends DefaultTask {
 
     // the task context
+    @Internal
     XMakeTaskContext taskContext
 
     // the constructor
