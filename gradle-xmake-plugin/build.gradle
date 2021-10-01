@@ -34,8 +34,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = 'https://github.com/xmake/xmake-gradle'
-    vcsUrl = 'https://github.com/xmake/xmake-gradle'
+    website = 'https://github.com/xmake-io/xmake-gradle'
+    vcsUrl = 'https://github.com/xmake-io/xmake-gradle'
     description = 'A gradle plugin that integrates xmake seamlessly'
     tags = ['xmake', 'c++', 'lua']
 
