@@ -64,6 +64,12 @@ class XMakeConfigureTask extends DefaultTask {
             parameters.add("-m");
             parameters.add(taskContext.buildMode);
         }
+        List<String> arguments = taskContext.arguments
+        if (arguments != null && arguments.size() > 0) {
+            for (String arg: arguments) {
+                parameters.add(arg)
+            }
+        }
         List<String> cFlags = taskContext.cFlags
         if (cFlags != null && cFlags.size() > 0) {
             int i = 0

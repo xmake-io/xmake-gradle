@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://xmake.io">
     <img width="200" heigth="200" src="https://tboox.org/static/img/xmake/logo256c.png">
-  </a>  
+  </a>
 
   <h1>xmake-gradle</h1>
 
@@ -36,7 +36,7 @@
 
 ## Introduction ([中文](/README_zh.md))
 
-xmake-gradle is a gradle plugin that integrates xmake seamlessly. 
+xmake-gradle is a gradle plugin that integrates xmake seamlessly.
 
 If you want to know more, please refer to:
 
@@ -56,7 +56,7 @@ XMake installed on the system. Available [here](https://github.com/xmake-io/xmak
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.1.5'
+  id 'org.tboox.gradle-xmake-plugin' version '1.1.6'
 }
 ```
 
@@ -70,7 +70,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.1.5'
+    classpath 'org.tboox:gradle-xmake-plugin:1.1.6'
   }
   repositories {
     mavenCentral()
