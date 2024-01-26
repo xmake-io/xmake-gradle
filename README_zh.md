@@ -152,7 +152,7 @@ android {
             // 设置jni工程中xmake.lua根文件路径，这是必须的，不设置就不会启用jni编译
             path "jni/xmake.lua"
 
-            // 启用详细输出，会显示完整编译命令行参数，其他值：verbose, warning, normal
+            // 启用详细输出，会显示完整编译命令行参数，其他值：verbose, normal
             logLevel "verbose"
 
             // 指定c++ stl库，默认不指定会使用c++_static，其他值：c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared

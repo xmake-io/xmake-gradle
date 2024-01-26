@@ -43,9 +43,6 @@ class XMakeBuildTask extends DefaultTask {
         parameters.add(taskContext.program)
         parameters.add("build")
         switch (taskContext.logLevel) {
-            case "warning":
-                parameters.add("-w")
-                break
             case "verbose":
                 parameters.add("-v")
                 break

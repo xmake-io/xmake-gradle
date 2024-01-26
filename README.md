@@ -152,7 +152,7 @@ android {
             // enable xmake and set xmake.lua project file path
             path "jni/xmake.lua"
 
-            // enable verbose output (optional), e.g. verbose, warning, normal
+            // enable verbose output (optional), e.g. verbose, normal
             logLevel "verbose"
 
             // set c++stl (optional), e.g. c++_static/c++_shared, gnustl_static/gnustl_shared, stlport_static/stlport_shared

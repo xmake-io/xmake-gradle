@@ -48,7 +48,7 @@ class XMakePluginExtension {
     // the build mode, e.g. debug, release, ..
     String buildMode
 
-    // the log level, e.g. normal, warning, verbose, debug
+    // the log level, e.g. normal, verbose, debug
     String logLevel
 
     // the configuration arguments
