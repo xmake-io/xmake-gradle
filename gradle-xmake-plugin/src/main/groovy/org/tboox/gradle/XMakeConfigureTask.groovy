@@ -110,7 +110,7 @@ class XMakeConfigureTask extends DefaultTask {
         } else {
             String stl = taskContext.stl
             if (stl != null) {
-                parameters.add("--ndk_cxxstl=" + stl)
+                parameters.add("--runtimes=" + stl)
             }
         }
         parameters.add("--buildir=" + taskContext.buildDirectory.path)

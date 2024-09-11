@@ -10,16 +10,16 @@ function _get_targets(...)
     if targetNames.n > 0 then
         for _, targetName in ipairs(targetNames) do
             local target = project.target(targetName)
-            if target:get("enabled") ~= false and target:targetkind() == "shared" then
+            if target:get("enabled") ~= false and target:is_shared() then
                 table.insert(targets, target)
             else
                 raise("invalid target(%s)!", targetName)
             end
         end
     else
-        for _, target in pairs(project.targets()) do
+        for _, target in ipairs(project.ordertargets()) do
             local default = target:get("default")
-            if (default == nil or default == true) and target:targetkind() == "shared" then
+            if (default == nil or default == true) and target:is_shared() then
                 table.insert(targets, target)
             end
         end
@@ -29,8 +29,6 @@ end
 
 -- install artifacts
 function _install_artifacts(libsdir, installdir, targets, arch)
-
-    -- append arch sub-directory
     libsdir = path.join(libsdir, arch, "lib")
     installdir = path.join(installdir, arch)
 
@@ -45,14 +43,12 @@ end
 
 -- install cxxstl for ndk >= r25
 function _install_cxxstl_newer_ndk(installdir, arch)
-    -- append arch sub-directory
     installdir = path.join(installdir, arch)
 
     local ndk = get_config("ndk")
     local ndk_cxxstl = get_config("ndk_cxxstl")
-
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
-       
+
         -- get the toolchains arch
         local toolchains_archs = {
             ["armeabi-v7a"] = "arm-linux-androideabi",
@@ -60,7 +56,7 @@ function _install_cxxstl_newer_ndk(installdir, arch)
             ["x86"] = "i686-linux-android",
             ["x86_64"] = "x86_64-linux-android"
         }
-    
+
         -- get stl library
         local cxxstl_filename
         if ndk_cxxstl == "c++_shared" then
@@ -71,7 +67,7 @@ function _install_cxxstl_newer_ndk(installdir, arch)
             local ndk_toolchain = toolchain.load("ndk", {plat = config.plat(), arch = config.arch()})
             local ndk_sysroot = ndk_toolchain:config("ndk_sysroot")
             local cxxstl_sdkdir_llvmstl = path.translate(format("%s/usr/lib/%s", ndk_sysroot, toolchains_archs[arch]))
-            
+
             os.vcp(path.join(cxxstl_sdkdir_llvmstl, cxxstl_filename), path.join(installdir, cxxstl_filename))
         end
 
@@ -181,7 +177,7 @@ function main(libsdir, installdir, archs, ...)
         for _, arch in ipairs({"armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"}) do
             if abi_filters[arch] then
                 _install_artifacts(libsdir, installdir, targets, arch)
-        
+
                 if get_config("ndkver") >= 25 then
                     _install_cxxstl_newer_ndk(installdir, arch)
                 else

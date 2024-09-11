@@ -56,7 +56,7 @@ XMake installed on the system. Available [here](https://github.com/xmake-io/xmak
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.1.6'
+  id 'org.tboox.gradle-xmake-plugin' version '1.1.7'
 }
 ```
 
@@ -70,7 +70,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.1.6'
+    classpath 'org.tboox:gradle-xmake-plugin:1.1.7'
   }
   repositories {
     mavenCentral()
