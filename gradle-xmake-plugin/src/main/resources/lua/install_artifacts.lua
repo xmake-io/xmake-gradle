@@ -1,6 +1,7 @@
 -- imports
 import("core.project.config")
 import("core.project.project")
+import("core.tool.toolchain")
 
 -- get targets
 function _get_targets(...)
@@ -39,6 +40,41 @@ function _install_artifacts(libsdir, installdir, targets, arch)
     end
     for _, target in ipairs(targets) do
         os.vcp(path.join(libsdir, path.filename(target:targetfile())), installdir)
+    end
+end
+
+-- install cxxstl for ndk >= r25
+function _install_cxxstl_newer_ndk(installdir, arch)
+    -- append arch sub-directory
+    installdir = path.join(installdir, arch)
+
+    local ndk = get_config("ndk")
+    local ndk_cxxstl = get_config("ndk_cxxstl")
+
+    if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
+       
+        -- get the toolchains arch
+        local toolchains_archs = {
+            ["armeabi-v7a"] = "arm-linux-androideabi",
+            ["arm64-v8a"] = "aarch64-linux-android",
+            ["x86"] = "i686-linux-android",
+            ["x86_64"] = "x86_64-linux-android"
+        }
+    
+        -- get stl library
+        local cxxstl_filename
+        if ndk_cxxstl == "c++_shared" then
+             cxxstl_filename = "libc++_shared.so"
+        end
+
+        if toolchains_archs[arch] ~= nil and cxxstl_filename then
+            local ndk_toolchain = toolchain.load("ndk", {plat = config.plat(), arch = config.arch()})
+            local ndk_sysroot = ndk_toolchain:config("ndk_sysroot")
+            local cxxstl_sdkdir_llvmstl = path.translate(format("%s/usr/lib/%s", ndk_sysroot, toolchains_archs[arch]))
+            
+            os.vcp(path.join(cxxstl_sdkdir_llvmstl, cxxstl_filename), path.join(installdir, cxxstl_filename))
+        end
+
     end
 end
 
@@ -145,8 +181,12 @@ function main(libsdir, installdir, archs, ...)
         for _, arch in ipairs({"armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"}) do
             if abi_filters[arch] then
                 _install_artifacts(libsdir, installdir, targets, arch)
-                _install_cxxstl(installdir, arch)
-
+        
+                if get_config("ndkver") >= 25 then
+                    _install_cxxstl_newer_ndk(installdir, arch)
+                else
+                    _install_cxxstl(installdir, arch)
+                end
             else
                 _clean_artifacts(installdir, targets, arch)
             end
