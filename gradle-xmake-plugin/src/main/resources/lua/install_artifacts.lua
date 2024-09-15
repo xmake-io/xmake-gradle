@@ -27,6 +27,15 @@ function _get_targets(...)
     return targets
 end
 
+-- retrieves a value from the specified target, using the given name and scope.
+-- unpack the multiple return values into a single table.
+function _get_from_target(target, name, scope)
+    local result, _ = target:get_from(name, scope)
+    result = result or {}
+    result = table.join(table.unpack(result))
+    return table.wrap(result)
+end
+
 -- install artifacts
 function _install_artifacts(libsdir, installdir, targets, arch)
     libsdir = path.join(libsdir, arch, "lib")
@@ -38,6 +47,15 @@ function _install_artifacts(libsdir, installdir, targets, arch)
     end
     for _, target in ipairs(targets) do
         os.vcp(path.join(libsdir, path.filename(target:targetfile())), installdir)
+        
+        -- install target packages
+        local package_installdirs = _get_from_target(target, "linkdirs", "package::*")
+        for _, package_installdir in ipairs(installdirs) do
+            local files = os.files(path.translate(format("%s/*.so", package_installdir)))
+            for _, file in ipairs(files) do
+                os.vcp(file, installdir)
+            end
+        end
     end
 end
 
