@@ -46,7 +46,7 @@ function _install_cxxstl_newer_ndk(installdir, arch)
     installdir = path.join(installdir, arch)
 
     local ndk = get_config("ndk")
-    local ndk_cxxstl = get_config("ndk_cxxstl")
+    local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
 
         -- get the toolchains arch
@@ -82,7 +82,7 @@ function _install_cxxstl(installdir, arch)
 
     -- install stl shared library
     local ndk = get_config("ndk")
-    local ndk_cxxstl = get_config("ndk_cxxstl")
+    local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     arch = arch or get_config("arch")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
 
@@ -189,3 +189,4 @@ function main(libsdir, installdir, archs, ...)
         end
     end
 end
+
