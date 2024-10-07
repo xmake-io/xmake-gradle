@@ -2,6 +2,8 @@
 import("core.project.config")
 import("core.project.project")
 import("core.tool.toolchain")
+import("target.action.install")
+import("target.action.uninstall")
 
 -- get targets
 function _get_targets(...)
@@ -27,35 +29,11 @@ function _get_targets(...)
     return targets
 end
 
--- retrieves a value from the specified target, using the given name and scope.
--- unpack the multiple return values into a single table.
-function _get_from_target(target, name, scope)
-    local result, _ = target:get_from(name, scope)
-    result = result or {}
-    result = table.join(table.unpack(result))
-    return table.wrap(result)
-end
-
 -- install artifacts
-function _install_artifacts(libsdir, installdir, targets, arch)
-    libsdir = path.join(libsdir, arch, "lib")
-    installdir = path.join(installdir, arch)
-
-    -- install targets
-    if not os.isdir(installdir) then
-        os.mkdir(installdir)
-    end
+function _install_artifacts(installdir, targets, arch)
+    assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
     for _, target in ipairs(targets) do
-        os.vcp(path.join(libsdir, path.filename(target:targetfile())), installdir)
-        
-        -- install target packages
-        local package_installdirs = _get_from_target(target, "linkdirs", "package::*")
-        for _, package_installdir in ipairs(installdirs) do
-            local files = os.files(path.translate(format("%s/*.so", package_installdir)))
-            for _, file in ipairs(files) do
-                os.vcp(file, installdir)
-            end
-        end
+        install(target, {installdir = installdir,  libdir = arch})
     end
 end
 
@@ -161,49 +139,55 @@ end
 
 -- clean artifacts
 function _clean_artifacts(installdir, targets, arch)
-
-    -- append arch sub-directory
-    installdir = path.join(installdir, arch)
-
-    -- clean targets artifacts in the install directory
+    assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
     for _, target in ipairs(targets) do
-        os.tryrm(path.join(installdir, path.filename(target:targetfile())))
-        if os.emptydir(installdir) then
-            os.tryrm(installdir)
+        uninstall(target, {installdir = installdir,  libdir = arch})
+    end
+
+    local installdir = path.join(installdir, arch)
+
+    -- clean cxxstl
+    local ndk_cxxstl = get_config("ndk_cxxstl")
+    if ndk_cxxstl then
+        local cxxstl_filename
+        if ndk_cxxstl == "c++_shared" then
+            cxxstl_filename = "libc++_shared.so"
+        elseif ndk_cxxstl == "gnustl_shared" then
+            cxxstl_filename = "libgnustl_shared.so"
+        elseif ndk_cxxstl == "stlport_shared" then
+            cxxstl_filename = "libstlport_shared.so"
         end
+        os.tryrm(installdir)
+    end
+
+    if os.emptydir(installdir) then
+        os.rmdir(installdir)
     end
 end
 
 -- main entry
-function main(libsdir, installdir, archs, ...)
+function main(installdir, arch, clean, ...)
 
     -- check
-    assert(libsdir and installdir and archs)
+    assert(installdir and clean)
 
     -- load config
     config.load()
 
-    -- get abi filters
-    local abi_filters = {}
-    for _, arch in ipairs(archs:split(',', {plain = true})) do
-        abi_filters[arch] = true
-    end
-
     -- do install or clean
     local targets = _get_targets(...)
-    if targets and #targets > 0 then
-        for _, arch in ipairs({"armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"}) do
-            if abi_filters[arch] then
-                _install_artifacts(libsdir, installdir, targets, arch)
-
-                if get_config("ndkver") >= 25 then
-                    _install_cxxstl_newer_ndk(installdir, arch)
-                else
-                    _install_cxxstl(installdir, arch)
-                end
-            else
-                _clean_artifacts(installdir, targets, arch)
-            end
+    assert(not targets or #targets == 0, "no targets provided, make sure to have at least one shared target in your xmake.lua or to provide one")
+   
+    if clean == "false" then
+        _install_artifacts(libsdir, installdir, targets, arch)
+    
+        if get_config("ndkver") >= 25 then
+            _install_cxxstl_newer_ndk(installdir, arch)
+        else
+            _install_cxxstl(installdir, arch)
         end
+    else
+        _clean_artifacts(installdir, targets, arch)
     end
+    
 end
