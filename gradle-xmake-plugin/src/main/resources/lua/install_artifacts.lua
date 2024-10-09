@@ -41,7 +41,7 @@ end
 function _install_artifacts(targets, opt)
     local arch = opt.arch
     local installdir = opt.installdir
-    assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
+    assert(xmake.version():satisfies("> 2.9.5"), "please update xmake to > 2.9.5")
     for _, target in ipairs(targets) do
         install(target, {installdir = installdir, libdir = arch})
     end
@@ -147,7 +147,7 @@ end
 function _clean_artifacts(targets, opt)
     local arch = opt.arch
     local installdir = opt.installdir
-    assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
+    assert(xmake.version():satisfies("> 2.9.5"), "please update xmake to > 2.9.5")
     for _, target in ipairs(targets) do
         uninstall(target, {installdir = installdir, libdir = arch})
     end
