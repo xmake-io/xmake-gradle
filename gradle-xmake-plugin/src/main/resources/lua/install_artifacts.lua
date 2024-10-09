@@ -42,7 +42,7 @@ function _install_cxxstl_newer_ndk(installdir, arch)
     installdir = path.join(installdir, arch)
 
     local ndk = get_config("ndk")
-    local ndk_cxxstl = get_config("ndk_cxxstl")
+    local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
 
         -- get the toolchains arch
@@ -78,8 +78,7 @@ function _install_cxxstl(installdir, arch)
 
     -- install stl shared library
     local ndk = get_config("ndk")
-    local ndk_cxxstl = get_config("ndk_cxxstl")
-    arch = arch or get_config("arch")
+    local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
 
         -- get llvm c++ stl sdk directory
@@ -165,10 +164,7 @@ function _clean_artifacts(installdir, targets, arch)
     end
 end
 
--- main entry
 function main(installdir, arch, clean, ...)
-
-    -- check
     assert(installdir and clean)
 
     -- load config
@@ -177,7 +173,8 @@ function main(installdir, arch, clean, ...)
     -- do install or clean
     local targets = _get_targets(...)
     assert(not targets or #targets == 0, "no targets provided, make sure to have at least one shared target in your xmake.lua or to provide one")
-   
+
+    arch = arch or get_config("arch")
     if clean == "false" then
         _install_artifacts(libsdir, installdir, targets, arch)
     
