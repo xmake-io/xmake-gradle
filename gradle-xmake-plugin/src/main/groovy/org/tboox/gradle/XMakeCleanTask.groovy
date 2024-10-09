@@ -61,6 +61,50 @@ class XMakeCleanTask extends DefaultTask {
         return parameters;
     }
 
+    private void uninstallArtifacts() {
+        // uninstall artifacts to the native libs directory
+        File installArtifactsScriptFile = new File(taskContext.buildDirectory, "install_artifacts.lua")
+        installArtifactsScriptFile.withWriter { out ->
+            String text = getClass().getClassLoader().getResourceAsStream("lua/install_artifacts.lua").getText()
+            out.write(text)
+        }
+
+        List<String> parameters = new ArrayList<>();
+        parameters.add(taskContext.program)
+        parameters.add("lua");
+        switch (taskContext.logLevel) {
+            case "verbose":
+                parameters.add("-v")
+                break
+            case "debug":
+                parameters.add("-vD")
+                break
+            default:
+                break
+        }
+        parameters.add(installArtifactsScriptFile.absolutePath)
+
+        // pass app/libs directory
+        parameters.add(taskContext.nativeLibsDir.absolutePath)
+
+        // pass arch
+        parameters.add(taskContext.buildArch)
+        // pass clean
+        parameters.add("true")
+
+        // pass targets
+        Set<String> targets = taskContext.targets
+        if (targets != null && targets.size() > 0) {
+            for (String target: targets) {
+                parameters.add(target)
+            }
+        }
+
+        // do uninstall
+        XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
+        executor.exec(parameters, taskContext.projectDirectory)
+    }
+
     @TaskAction
     void clean() {
 
@@ -74,8 +118,10 @@ class XMakeCleanTask extends DefaultTask {
             throw new GradleException(TAG + taskContext.projectFile.absolutePath + " not found!")
         }
 
-        // do build
+        // do clean
         XMakeExecutor executor = new XMakeExecutor(taskContext.logger)
         executor.exec(buildCmdLine(), taskContext.projectDirectory)
+
+        uninstallArtifacts()
     }
 }

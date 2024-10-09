@@ -55,24 +55,13 @@ class XMakeInstallTask extends DefaultTask {
         }
         parameters.add(installArtifactsScriptFile.absolutePath)
 
-        // pass build/libs directory
-        parameters.add(new File(taskContext.buildDirectory, "libs").path)
-
         // pass app/libs directory
         parameters.add(taskContext.nativeLibsDir.absolutePath)
 
-        // pass abiFilters
-        int i = 0
-        StringBuilder abiFiltersList = new StringBuilder("")
-        Set<String> abiFilters = taskContext.abiFilters
-        for (String filter: abiFilters) {
-            if (i > 0) {
-                abiFiltersList.append(",")
-            }
-            abiFiltersList.append(filter)
-            i++
-        }
-        parameters.add(abiFiltersList.toString())
+        // pass arch
+        parameters.add(taskContext.buildArch)
+        // pass clean
+        parameters.add("false")
 
         // pass targets
         Set<String> targets = taskContext.targets

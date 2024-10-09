@@ -181,14 +181,36 @@ class XMakePlugin implements Plugin<Project> {
     }
 
     private registerXMakeInstallTasks(Project project, XMakePluginExtension extension, XMakeLogger logger) {
-        def installTask = project.tasks.register("xmakeInstall", XMakeInstallTask, new Action<XMakeInstallTask>() {
+        for (String name : forNames) {
+            def installTask = project.tasks.register("xmakeInstallFor" + name, XMakeInstallTask, new Action<XMakeInstallTask>() {
+                @Override
+                void execute(XMakeInstallTask task) {
+                    String forName = task.name.split("For")[1]
+                    task.taskContext = new XMakeTaskContext(extension, project, logger, archMaps[forName])
+                }
+            })
+            installTask.configure { Task task ->
+                String forName = task.name.split("For")[1]
+                task.dependsOn("xmakeBuildFor" + forName)
+            }
+        }
+        def installTask = project.tasks.register("xmakeInstall", XMakeBuildTask, new Action<XMakeInstallTask>() {
             @Override
             void execute(XMakeInstallTask task) {
-                task.taskContext = new XMakeTaskContext(extension, project, logger, null)
             }
         })
         installTask.configure { Task task ->
-            task.dependsOn("xmakeBuild")
+            if (projectContext.abiFilters != null) {
+                for (String filter: projectContext.abiFilters) {
+                    String forName = forNameMaps[filter]
+                    if (forName == null) {
+                        throw new GradleException("invalid abiFilter: " + filter)
+                    }
+                    task.dependsOn("xmakeInstallFor" + forName)
+                }
+            } else {
+                task.dependsOn("xmakeInstallForArmv7")
+            }
         }
     }
 
