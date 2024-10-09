@@ -56,12 +56,12 @@ class XMakeInstallTask extends DefaultTask {
         parameters.add(installArtifactsScriptFile.absolutePath)
 
         // pass app/libs directory
+        parameters.add("-o")
         parameters.add(taskContext.nativeLibsDir.absolutePath)
 
         // pass arch
+        parameters.add("-a")
         parameters.add(taskContext.buildArch)
-        // pass clean
-        parameters.add("false")
 
         // pass targets
         Set<String> targets = taskContext.targets
@@ -75,6 +75,11 @@ class XMakeInstallTask extends DefaultTask {
 
     @TaskAction
     void install() {
+
+        // phony task? we need only return it
+        if (taskContext == null) {
+            return
+        }
 
         // trace
         taskContext.logger.i(">> install artifacts to " + taskContext.nativeLibsDir.absolutePath)

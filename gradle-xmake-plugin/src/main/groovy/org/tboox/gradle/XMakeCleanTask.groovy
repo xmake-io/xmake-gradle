@@ -62,6 +62,7 @@ class XMakeCleanTask extends DefaultTask {
     }
 
     private void uninstallArtifacts() {
+
         // uninstall artifacts to the native libs directory
         File installArtifactsScriptFile = new File(taskContext.buildDirectory, "install_artifacts.lua")
         installArtifactsScriptFile.withWriter { out ->
@@ -85,12 +86,15 @@ class XMakeCleanTask extends DefaultTask {
         parameters.add(installArtifactsScriptFile.absolutePath)
 
         // pass app/libs directory
+        parameters.add("-o")
         parameters.add(taskContext.nativeLibsDir.absolutePath)
 
         // pass arch
+        parameters.add("-a")
         parameters.add(taskContext.buildArch)
+
         // pass clean
-        parameters.add("true")
+        parameters.add("-c")
 
         // pass targets
         Set<String> targets = taskContext.targets

@@ -194,7 +194,7 @@ class XMakePlugin implements Plugin<Project> {
                 task.dependsOn("xmakeBuildFor" + forName)
             }
         }
-        def installTask = project.tasks.register("xmakeInstall", XMakeBuildTask, new Action<XMakeInstallTask>() {
+        def installTask = project.tasks.register("xmakeInstall", XMakeInstallTask, new Action<XMakeInstallTask>() {
             @Override
             void execute(XMakeInstallTask task) {
             }

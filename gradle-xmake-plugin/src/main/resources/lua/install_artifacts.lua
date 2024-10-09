@@ -1,15 +1,23 @@
 -- imports
+import("core.base.option")
 import("core.project.config")
 import("core.project.project")
 import("core.tool.toolchain")
 import("target.action.install")
 import("target.action.uninstall")
 
+local options = {
+    {'o', "installdir",  "kv", nil,  "Set the install directory"},
+    {'a', "arch",        "kv",  nil, "Set the installed target architecture"},
+    {'c', "clean",       "k", false, "Clean artifacts"},
+    {nil, "targets",     "vs", nil,  "Set the targets"}
+}
+
 -- get targets
-function _get_targets(...)
+function _get_targets(targetNames)
     local targets = {}
-    local targetNames = table.pack(...)
-    if targetNames.n > 0 then
+    targetNames = targetNames or {}
+    if #targetNames > 0 then
         for _, targetName in ipairs(targetNames) do
             local target = project.target(targetName)
             if target:get("enabled") ~= false and target:is_shared() then
@@ -30,17 +38,19 @@ function _get_targets(...)
 end
 
 -- install artifacts
-function _install_artifacts(installdir, targets, arch)
+function _install_artifacts(targets, opt)
+    local arch = opt.arch
+    local installdir = opt.installdir
     assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
     for _, target in ipairs(targets) do
-        install(target, {installdir = installdir,  libdir = arch})
+        install(target, {installdir = installdir, libdir = arch})
     end
 end
 
 -- install cxxstl for ndk >= r25
-function _install_cxxstl_newer_ndk(installdir, arch)
-    installdir = path.join(installdir, arch)
-
+function _install_cxxstl_newer_ndk(opt)
+    local arch = opt.arch
+    local installdir = path.join(opt.installdir, arch)
     local ndk = get_config("ndk")
     local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
@@ -71,12 +81,9 @@ function _install_cxxstl_newer_ndk(installdir, arch)
 end
 
 -- install c++ stl shared library
-function _install_cxxstl(installdir, arch)
-
-    -- append arch sub-directory
-    installdir = path.join(installdir, arch)
-
-    -- install stl shared library
+function _install_cxxstl(opt)
+    local arch = opt.arch
+    local installdir = path.join(opt.installdir, arch)
     local ndk = get_config("ndk")
     local ndk_cxxstl = get_config("runtimes") or get_config("ndk_cxxstl")
     if ndk and ndk_cxxstl and ndk_cxxstl:endswith("_shared") and arch then
@@ -137,15 +144,16 @@ function _install_cxxstl(installdir, arch)
 end
 
 -- clean artifacts
-function _clean_artifacts(installdir, targets, arch)
+function _clean_artifacts(targets, opt)
+    local arch = opt.arch
+    local installdir = opt.installdir
     assert(xmake.version():satisfies(">= 2.9.5"), "please update xmake to >= 2.9.5")
     for _, target in ipairs(targets) do
-        uninstall(target, {installdir = installdir,  libdir = arch})
+        uninstall(target, {installdir = installdir, libdir = arch})
     end
 
-    local installdir = path.join(installdir, arch)
-
     -- clean cxxstl
+    installdir = path.join(installdir, arch)
     local ndk_cxxstl = get_config("ndk_cxxstl")
     if ndk_cxxstl then
         local cxxstl_filename
@@ -164,28 +172,30 @@ function _clean_artifacts(installdir, targets, arch)
     end
 end
 
-function main(installdir, arch, clean, ...)
-    assert(installdir and clean)
+function main(...)
+    local argv = table.pack(...)
+    local opt = option.parse(argv, options, "Install the target artifacts."
+                                           , ""
+                                           , "Usage: xmake l install_artifacts.lua [options]")
+    assert(opt.installdir)
 
     -- load config
     config.load()
 
     -- do install or clean
-    local targets = _get_targets(...)
-    assert(not targets or #targets == 0, "no targets provided, make sure to have at least one shared target in your xmake.lua or to provide one")
+    local targets = _get_targets(opt.targets)
+    assert(targets and #targets > 0, "no targets provided, make sure to have at least one shared target in your xmake.lua or to provide one")
 
-    arch = arch or get_config("arch")
-    if clean == "false" then
-        _install_artifacts(libsdir, installdir, targets, arch)
-    
+    opt.arch = opt.arch or get_config("arch")
+    if not opt.clean then
+        _install_artifacts(targets, opt)
         if get_config("ndkver") >= 25 then
-            _install_cxxstl_newer_ndk(installdir, arch)
+            _install_cxxstl_newer_ndk(opt)
         else
-            _install_cxxstl(installdir, arch)
+            _install_cxxstl(opt)
         end
     else
-        _clean_artifacts(installdir, targets, arch)
+        _clean_artifacts(targets, opt)
     end
-    
 end
 
