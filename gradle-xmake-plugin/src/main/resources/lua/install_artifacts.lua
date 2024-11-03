@@ -59,6 +59,7 @@ function _install_cxxstl_newer_ndk(opt)
         local toolchains_archs = {
             ["armeabi-v7a"] = "arm-linux-androideabi",
             ["arm64-v8a"] = "aarch64-linux-android",
+            ["riscv64"] = "riscv64-linux-android",
             ["x86"] = "i686-linux-android",
             ["x86_64"] = "x86_64-linux-android"
         }
@@ -118,6 +119,7 @@ function _install_cxxstl(opt)
         ,   ["armeabi"]     = "armeabi"         -- removed in ndk r17
         ,   ["armeabi-v7a"] = "armeabi-v7a"
         ,   ["arm64-v8a"]   = "arm64-v8a"
+        ,   ["riscv64"]     = "riscv64"
         ,   i386            = "x86"             -- deprecated
         ,   x86             = "x86"
         ,   x86_64          = "x86_64"
