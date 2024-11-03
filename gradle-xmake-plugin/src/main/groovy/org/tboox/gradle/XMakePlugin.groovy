@@ -38,13 +38,13 @@ class XMakePlugin implements Plugin<Project> {
     private XMakeTaskContext projectContext
 
     // the architecture maps
-    private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", X64: "x86_64", X86: "x86"]
+    private Map<String, String> archMaps = [Arm64: "arm64-v8a", Armv7: "armeabi-v7a", Arm: "armeabi", RiscV64: "riscv64", X64: "x86_64", X86: "x86"]
 
     // the forName maps
-    private Map<String, String> forNameMaps = ["arm64-v8a": "Arm64", "armeabi-v7a": "Armv7", "armeabi": "Arm", "x86_64": "X64", "x86": "X86"]
+    private Map<String, String> forNameMaps = ["arm64-v8a": "Arm64", "armeabi-v7a": "Armv7", "armeabi": "Arm", "riscv64": "RiscV64", "x86_64": "X64", "x86": "X86"]
 
     // the forName lists
-    private List<String> forNames = ["Arm64", "Armv7", "Arm", "X64", "X86"]
+    private List<String> forNames = ["Arm64", "Armv7", "Arm", "RiscV64", "X64", "X86"]
 
     @Override
     void apply(Project project) {
