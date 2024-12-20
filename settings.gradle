@@ -1,2 +1,2 @@
-include ':app', ':nativelib', ':gradle-xmake-plugin'
+include ':gradle-xmake-plugin'
 rootProject.name='xmake-gradle'
