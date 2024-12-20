@@ -43,7 +43,7 @@ function _install_artifacts(targets, opt)
     local installdir = opt.installdir
     assert(xmake.version():ge("2.9.6"), "please update xmake to >= 2.9.6")
     for _, target in ipairs(targets) do
-        install(target, {installdir = installdir, libdir = arch})
+        install(target, {installdir = installdir, libdir = arch, includedir = "include"})
     end
 end
 
@@ -151,7 +151,7 @@ function _clean_artifacts(targets, opt)
     local installdir = opt.installdir
     assert(xmake.version():ge("2.9.6"), "please update xmake to >= 2.9.6")
     for _, target in ipairs(targets) do
-        uninstall(target, {installdir = installdir, libdir = arch})
+        uninstall(target, {installdir = installdir, libdir = arch, includedir = "include"})
     end
 
     -- clean cxxstl
