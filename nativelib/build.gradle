@@ -5,15 +5,19 @@ apply plugin: 'com.android.library'
 //apply plugin: "org.tboox.gradle-xmake-plugin"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.2"
+    namespace 'org.tboox.xmake.nativelib'  // Update the namespace accordingly
+    compileSdkVersion 34  // Updated SDK version
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildToolsVersion "34.0.0"  // Ensure build tools match the compile SDK
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 21  // Updated minimum SDK version
+        targetSdkVersion 34  // Updated target SDK version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -75,11 +79,17 @@ android {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    testImplementation 'junit:junit:4.13.2'  // Updated version
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'  // Updated version
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'  // Updated version
 }

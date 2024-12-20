@@ -7,7 +7,7 @@ buildscript {
 
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath 'com.android.tools.build:gradle:8.7.3'  // Updated version
         //classpath fileTree(dir: 'gradle-xmake-plugin/build/libs', include: ['*.jar'])
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,6 +20,12 @@ allprojects {
         google()
         mavenCentral()
 
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        javaCompiler = javaToolchains.compilerFor {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }
 
