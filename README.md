@@ -56,7 +56,7 @@ XMake installed on the system. Available [here](https://github.com/xmake-io/xmak
 
 ```
 plugins {
-  id 'org.tboox.gradle-xmake-plugin' version '1.2.0'
+  id 'org.tboox.gradle-xmake-plugin' version '1.2.1'
 }
 ```
 
@@ -70,7 +70,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'org.tboox:gradle-xmake-plugin:1.2.0'
+    classpath 'org.tboox:gradle-xmake-plugin:1.2.1'
   }
   repositories {
     mavenCentral()
@@ -226,11 +226,14 @@ $ ./gradlew gradle-xmake-plugin:publishPlugins
 ## Contacts
 
 * Email：[waruqi@gmail.com](mailto:waruqi@gmail.com)
-* Homepage：[tboox.org](https://tboox.org)
-* Community：[/r/tboox on reddit](https://www.reddit.com/r/tboox/)
-* ChatRoom：[Char on telegram](https://t.me/tbooxorg), [Chat on gitter](https://gitter.im/tboox/tboox?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-* QQ Group: 343118190(full), 662147501
-* Wechat Public: tboox-os
+* Homepage：[xmake.io](https://xmake.io)
+* Community
+  - [Chat on Reddit](https://www.reddit.com/r/xmake/)
+  - [Chat on Telegram](https://t.me/tbooxorg)
+  - [Chat on Discord](https://discord.gg/xmake)
+  - Chat on QQ Group: 343118190, 662147501
+* Source Code：[GitHub](https://github.com/xmake-io/xmake), [Gitee](https://gitee.com/tboox/xmake)
+* WeChat Public: tboox-os
 
 ## Backers
 
