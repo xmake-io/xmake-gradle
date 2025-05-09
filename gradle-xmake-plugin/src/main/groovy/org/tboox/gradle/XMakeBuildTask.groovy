@@ -77,7 +77,7 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add("-q")
                 break
         }
-        File libsDir = new File(taskContext.buildDirectory, String.join(File.separator, "libs", taskContext.buildArch))
+        File libsDir = new File(taskContext.buildDirectory, String.join(File.separator, "src", "main", "jniLibs" taskContext.buildArch))
         parameters.add("-o")
         parameters.add(libsDir.path)
         Set<String> targets = taskContext.targets
