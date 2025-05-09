@@ -7,7 +7,7 @@ buildscript {
 
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath 'com.android.tools.build:gradle:8.10.0'
         //classpath fileTree(dir: 'gradle-xmake-plugin/build/libs', include: ['*.jar'])
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,10 +19,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }

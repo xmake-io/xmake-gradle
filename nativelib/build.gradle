@@ -5,15 +5,12 @@ apply plugin: 'com.android.library'
 //apply plugin: "org.tboox.gradle-xmake-plugin"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.2"
-
+    namespace "org.tboox.xmake.nativelib"
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 30
+        targetSdkVersion 36
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -48,14 +45,14 @@ android {
 
         /*
         cmake {
-            version "3.17.3"
-            path "jni/CMakeLists.txt"
+            version "3.22.1"
+            path "src/main/cpp/CMakeLists.txt"
         }*/
 
         /*
         xmake {
             logLevel "verbose"
-            path "jni/xmake.lua"
+            path "src/main/cpp/xmake.lua"
             buildMode "debug"
             //arguments "--test=y"
             //program /usr/local/bin/xmake
@@ -75,9 +72,13 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
+dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
