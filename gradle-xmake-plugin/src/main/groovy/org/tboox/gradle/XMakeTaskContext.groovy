@@ -153,7 +153,7 @@ class XMakeTaskContext {
 
     // get native libs directory
     File getNativeLibsDir() {
-        return new File(project.buildscript.sourceFile.parentFile,"src"+ File.separator + "main" + File.separator + "jniLibs").absoluteFile
+        return new File(project.buildscript.sourceFile.parentFile, String.join(File.separator, "src", "main", "jniLibs")).absoluteFile
     }
 
     // get cflags
