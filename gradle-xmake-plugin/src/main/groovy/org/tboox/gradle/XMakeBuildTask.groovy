@@ -39,7 +39,7 @@ class XMakeBuildTask extends DefaultTask {
 
     // build command line
     private List<String> buildCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("build")
         switch (taskContext.logLevel) {
@@ -58,12 +58,12 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add(target)
             }
         }
-        return parameters;
+        return parameters
     }
 
     // build install command line
     private List<String> buildInstallCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("install")
         switch (taskContext.logLevel) {
@@ -77,7 +77,7 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add("-q")
                 break
         }
-        File libsDir = new File(taskContext.buildDirectory, String.join(File.separator, "libs", taskContext.buildArch))
+        File libsDir = new File(taskContext.buildDirectory, String.join(File.separator, "src", "main", "jniLibs", taskContext.buildArch))
         parameters.add("-o")
         parameters.add(libsDir.path)
         Set<String> targets = taskContext.targets
@@ -86,7 +86,7 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add(target)
             }
         }
-        return parameters;
+        return parameters
     }
 
     @TaskAction

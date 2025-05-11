@@ -148,12 +148,12 @@ class XMakeTaskContext {
                 return new File(project.buildscript.sourceFile.parentFile, buildDir).absoluteFile
             }
         }
-        return new File(project.buildDir.absoluteFile, "xmake")
+        return new File(project.layout.buildDirectory.asFile.get().absoluteFile, "xmake")
     }
 
     // get native libs directory
     File getNativeLibsDir() {
-        return new File(project.buildscript.sourceFile.parentFile,"libs").absoluteFile
+        return new File(project.buildscript.sourceFile.parentFile, String.join(File.separator, "src", "main", "jniLibs")).absoluteFile
     }
 
     // get cflags

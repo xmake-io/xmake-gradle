@@ -83,7 +83,7 @@ class XMakePlugin implements Plugin<Project> {
             registerXMakeCleanTasks(project, extension, logger)
 
             // register build task to the beginning of preBuild task
-            def preBuildTask = project.tasks.getByName("preBuild")
+            def preBuildTask = project.tasks.named("preBuild")
             if (preBuildTask != null) {
                 preBuildTask.configure { Task task ->
                     task.dependsOn("xmakeInstall")
@@ -91,7 +91,7 @@ class XMakePlugin implements Plugin<Project> {
             }
 
             // register clean task to the beginning of clean task
-            def cleanTask = project.tasks.getByName("clean")
+            def cleanTask = project.tasks.named("clean")
             if (cleanTask != null) {
                 cleanTask.configure { Task task ->
                     task.dependsOn("xmakeClean")

@@ -39,7 +39,7 @@ class XMakeConfigureTask extends DefaultTask {
 
     // build command line
     private List<String> buildCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("f")
         parameters.add("-c")
@@ -54,15 +54,15 @@ class XMakeConfigureTask extends DefaultTask {
             default:
                 break
         }
-        parameters.add("-p");
-        parameters.add("android");
+        parameters.add("-p")
+        parameters.add("android")
         if (taskContext.buildArch != null) {
-            parameters.add("-a");
-            parameters.add(taskContext.buildArch);
+            parameters.add("-a")
+            parameters.add(taskContext.buildArch)
         }
         if (taskContext.buildMode != null) {
-            parameters.add("-m");
-            parameters.add(taskContext.buildMode);
+            parameters.add("-m")
+            parameters.add(taskContext.buildMode)
         }
         List<String> arguments = taskContext.arguments
         if (arguments != null && arguments.size() > 0) {
@@ -114,7 +114,7 @@ class XMakeConfigureTask extends DefaultTask {
             }
         }
         parameters.add("--buildir=" + taskContext.buildDirectory.path)
-        return parameters;
+        return parameters
     }
 
     @TaskAction
