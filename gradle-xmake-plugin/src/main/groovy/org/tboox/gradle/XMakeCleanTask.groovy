@@ -39,7 +39,7 @@ class XMakeCleanTask extends DefaultTask {
 
     // build command line
     private List<String> buildCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("clean")
         switch (taskContext.logLevel) {
@@ -58,7 +58,7 @@ class XMakeCleanTask extends DefaultTask {
                 parameters.add(target)
             }
         }
-        return parameters;
+        return parameters
     }
 
     private void uninstallArtifacts() {
@@ -70,9 +70,9 @@ class XMakeCleanTask extends DefaultTask {
             out.write(text)
         }
 
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
-        parameters.add("lua");
+        parameters.add("lua")
         switch (taskContext.logLevel) {
             case "verbose":
                 parameters.add("-v")

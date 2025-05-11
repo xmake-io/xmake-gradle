@@ -39,7 +39,7 @@ class XMakeBuildTask extends DefaultTask {
 
     // build command line
     private List<String> buildCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("build")
         switch (taskContext.logLevel) {
@@ -58,12 +58,12 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add(target)
             }
         }
-        return parameters;
+        return parameters
     }
 
     // build install command line
     private List<String> buildInstallCmdLine() {
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<>()
         parameters.add(taskContext.program)
         parameters.add("install")
         switch (taskContext.logLevel) {
@@ -86,7 +86,7 @@ class XMakeBuildTask extends DefaultTask {
                 parameters.add(target)
             }
         }
-        return parameters;
+        return parameters
     }
 
     @TaskAction
