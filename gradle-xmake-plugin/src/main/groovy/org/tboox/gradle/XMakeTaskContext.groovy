@@ -148,7 +148,7 @@ class XMakeTaskContext {
                 return new File(project.buildscript.sourceFile.parentFile, buildDir).absoluteFile
             }
         }
-        return new File(project.layout.buildDirectory.absoluteFile, "xmake")
+        return new File(project.layout.buildDirectory.asFile.get().absoluteFile, "xmake")
     }
 
     // get native libs directory
